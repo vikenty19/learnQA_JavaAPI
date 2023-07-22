@@ -1,3 +1,4 @@
+import io.restassured.path.json.JsonPath;
 import org.junit.jupiter.api.Test;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
@@ -7,15 +8,24 @@ import java.util.Map;
 
 public class HelloWorldTest {
     @Test
-    public void testRestAssured(){
-       // System.out.println("Hello World!");
-     //   Map<String,String> params = new HashMap<>();
-        Response response = RestAssured
+    public void testJsonPath(){
+
+        HashMap<String,String> params = new HashMap<>();
+        params.put("name","Santa");
+        //  params.put("name","NY");
+        JsonPath response = RestAssured
                 .given()
-                .queryParam("name","Santa")
+                .queryParams(params)
                 .get("https://playground.learnqa.ru/api/hello")
-                .andReturn();
-        response.prettyPrint();
+                .jsonPath();
+        //  response.prettyPrint();
+        String answer = response.get("answer");
+        //    System.out.println(answer);
+        if (answer == null){
+            System.out.println("Key 'answer' is absent");
+        } else {
+            System.out.println(answer);
+        }
 
     }
     @Test
