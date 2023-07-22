@@ -8,12 +8,14 @@ import java.util.Map;
 public class HelloWorldTest {
     @Test
     public void testRestAssured(){
-       // System.out.println("Hello World!");
-     //   Map<String,String> params = new HashMap<>();
+
+       HashMap<String,String> params = new HashMap<>();
+      // params.put("name","Santa");
+       params.put("name","NY");
         Response response = RestAssured
                 .given()
-                .queryParam("name","Santa")
-                .get("https://playground.learnqa.ru/api/hello")
+                .queryParams(params)
+                        .get("https://playground.learnqa.ru/api/hello")
                 .andReturn();
         response.prettyPrint();
 
@@ -24,6 +26,7 @@ public class HelloWorldTest {
                 .get("https://playground.learnqa.ru/api/get_text")
                 .andReturn();
         response.prettyPrint();
+        response.print();
 
     }
 }
