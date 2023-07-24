@@ -13,7 +13,7 @@ public class HomeworkTest1 {
                 .get("https://playground.learnqa.ru/api/get_json_homework")
                 .jsonPath();
         response.prettyPrint();
-
+        System.out.println(response.getString("messages[1].message"));
         }
 
     }
