@@ -11,20 +11,21 @@ import java.util.Set;
 
 public class HomeworkTest1 {
     @Test
-    public void testJsonPath(){
+    public void testJsonPath() {
 
-  
-         JsonPath response = RestAssured
+
+        JsonPath response = RestAssured
                 .get("https://playground.learnqa.ru/api/get_json_homework")
                 .jsonPath();
         response.prettyPrint();
         System.out.println(response.getString("messages[1].timestamp"));
-        }
+    }
+
     @Test
-    public void testRestAssured(){
-        Map<String,String> headers = new HashMap<>();
-        headers.put("myHeader1","myValue1");
-        headers.put("myHeader2","myValue2");
+    public void testRestAssured() {
+        Map<String, String> headers = new HashMap<>();
+        headers.put("myHeader1", "myValue1");
+        headers.put("myHeader2", "myValue2");
 
         Response response = RestAssured
                 .given()
@@ -33,13 +34,13 @@ public class HomeworkTest1 {
                 .when()
                 .get("https://playground.learnqa.ru/api/long_redirect")
                 .andReturn();
-       // int statusCode = response.getStatusCode();
-      //  System.out.println(statusCode);
+        // int statusCode = response.getStatusCode();
+        //  System.out.println(statusCode);
         response.prettyPrint();
-    //     Headers responseHeaders = response.getHeaders();
-      //  System.out.println(responseHeaders);
+        //     Headers responseHeaders = response.getHeaders();
+        //  System.out.println(responseHeaders);
 
-         String locationHeader = response.getHeader("location");
+        String locationHeader = response.getHeader("location");
         System.out.println(locationHeader);
     }
 
