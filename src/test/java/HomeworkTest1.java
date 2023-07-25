@@ -34,15 +34,42 @@ public class HomeworkTest1 {
                 .when()
                 .get("https://playground.learnqa.ru/api/long_redirect")
                 .andReturn();
-        // int statusCode = response.getStatusCode();
-        //  System.out.println(statusCode);
-        response.prettyPrint();
-        //     Headers responseHeaders = response.getHeaders();
-        //  System.out.println(responseHeaders);
+        int statusCode = response.getStatusCode();
+        System.out.println(statusCode);
+        //  response.prettyPrint();
+        Headers responseHeaders = response.getHeaders();
+        System.out.println(responseHeaders);
 
         String locationHeader = response.getHeader("location");
         System.out.println(locationHeader);
     }
 
+    @Test
+    public void testLongRedirect() {
+        Map<String, String> headers = new HashMap<>();
+        headers.put("myHeader1", "myValue1");
+        headers.put("myHeader2", "myValue2");
+        String locationHeader = "https://playground.learnqa.ru/api/long_redirect";
+        int statusCode;
+        do {
+            Response response = RestAssured
+                    .given()
+                    .redirects()
+                    .follow(false)
+                    .when()
+                    .get(locationHeader)
+                    .andReturn();
+            statusCode = response.getStatusCode();
+            System.out.println(statusCode);
+            //  response.prettyPrint();
+            Headers responseHeaders = response.getHeaders();
+            System.out.println(responseHeaders);
+
+            locationHeader = response.getHeader("location");
+            System.out.println(locationHeader);
+        }
+        while (statusCode != 200);
+        System.out.println(statusCode);
+    }
 
 }
