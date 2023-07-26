@@ -18,7 +18,7 @@ public class HomeworkToken {
                 .get(" https://playground.learnqa.ru/ajax/api/longtime_job")
                 .jsonPath();
         response.prettyPrint();
-  
+
         // add a token
 
         String param = response.getString("token");
