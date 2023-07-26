@@ -13,9 +13,7 @@ public class FindPassword {
         HashMap<String, String> date = new HashMap<>();
         date.put("login", "super_admin");
          date.put("password","NY");
-         Boolean equals = false;
-
-         if(equals = false){
+    
         Response getResponse = RestAssured
                 .given()
                 .body(date)
@@ -23,6 +21,7 @@ public class FindPassword {
                 .post(" https://playground.learnqa.ru/ajax/api/get_secret_password_homework")
                 .andReturn();
        getResponse.prettyPrint();
+             System.out.println(getResponse);
      String authCookie =  getResponse.getCookie("auth_Cookie");
 
         System.out.println(authCookie);
@@ -39,7 +38,12 @@ public class FindPassword {
                 .when()
                 .post("https://playground.learnqa.ru/ajax/api/check_auth_cookie")
                 .andReturn();
-        responseForPassword.print();}
+  //        responseForPassword.print();
+        Boolean password = responseForPassword
+                .print()
+                .equals("You are NOT authorized");
+        System.out.println(password );
+
+           }
 
     }
-}
