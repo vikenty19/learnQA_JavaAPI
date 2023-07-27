@@ -18,11 +18,17 @@ public class FindPassword {
 
         HashMap<String, String> date = new HashMap<>();
         date.put("login", "super_admin");
-        String[] findPassword ={"123456","12345","134567","123456789","qwerty",
-                "password","12345678","111111","123123","1234567890","1234567","qwerty123","000000","1q2w3e",
-                "aa12345678","abc123","password1","1234","qwertyuiop","123321","password123","letmein","iloveyou",
-                 "111111","123123","abc123","qwerty123","1q2w3e4r","admin","qwertyuiop","654321","555555",
-                 "lovely","7777777","welcome","888888","princess","dragon","password1","123qwe" };
+        String[] findPassword ={"password","123456","123456789","12345678","12345","qwerty",
+                "qwerty", "abc123","football","1234567","monkey","111111","letmein","111111","1234567890",
+                "letmein","dragon","baseball","1234","sunshine","iloveyou","trustno1","princess","adobe123[a]",
+                "123123","login","admin","princess","trustno1","monkey","welcome","solo","1q2w3e4r",
+                "master","sunshine","666666","master","photoshop[a]","1qaz2wsx","qwertyuiop",
+                "passw0rd","shadow","lovely","shadow","ashley","master","654321","7777777",
+                 "michael","login","!@#$%^&*","jesus","password1","superman","princess","hello",
+                "charlie",	"888888","superman","michael","princess","696969","qwertyuiop","hottie",
+                "freedom","aa123456","qazwsx",	"ninja",	"azerty","loveme","whatever","donald",
+                 "mustang","trustno1","	batman","zaq1zaq1","qazwsx","password1","Football","000000",
+                "trustno1",	"starwars",	"123qwe"};
         for(int i=0; i<findPassword.length;i++){
         date.put("password",findPassword[i]);
 
@@ -35,7 +41,7 @@ public class FindPassword {
                         .post(" https://playground.learnqa.ru/ajax/api/get_secret_password_homework")
                         .andReturn();
                 getResponse.prettyPrint();
-                //      System.out.println(getResponse);
+
                 String authCookie = getResponse.getCookie("auth_Cookie");
 
                 System.out.println(authCookie);
