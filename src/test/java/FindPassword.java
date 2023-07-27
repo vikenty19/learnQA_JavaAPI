@@ -32,7 +32,7 @@ public class FindPassword {
         for(int i=0; i<findPassword.length;i++){
         date.put("password",findPassword[i]);
 
-      //  while ( true)
+      
 
                 Response getResponse = RestAssured
                         .given()
@@ -59,7 +59,7 @@ public class FindPassword {
                         .post("https://playground.learnqa.ru/ajax/api/check_auth_cookie")
                         .andReturn();
 
-                Boolean password = responseForPassword
+               Boolean password = responseForPassword
                         .print()
                         .equals("You are NOT authorized");
 
