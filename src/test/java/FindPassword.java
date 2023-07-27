@@ -13,7 +13,7 @@ public class FindPassword {
         HashMap<String, String> date = new HashMap<>();
         date.put("login", "super_admin");
          date.put("password","NY");
-    
+
         Response getResponse = RestAssured
                 .given()
                 .body(date)
