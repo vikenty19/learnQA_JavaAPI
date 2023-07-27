@@ -8,25 +8,26 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import org.junit.runner.RunWith;
 
 public class FindPassword {
-//    @CommandLine.Parameters
-    //  public static Collection<Object[]> data() {
-    //  Object[][] data = new Object[][]{{1}, {2}, {3}, {4}};
-    //    return Arrays.asList(data);
-
-    //  }
-
 
     @Test
     public void findPassword() {
 
+
         HashMap<String, String> date = new HashMap<>();
         date.put("login", "super_admin");
-        date.put("password", "NY");
+        String[] findPassword ={"123456","12345","134567","123456789","qwerty",
+                "password","12345678","111111","123123","1234567890","1234567","qwerty123","000000","1q2w3e",
+                "aa12345678","abc123","password1","1234","qwertyuiop","123321","password123","letmein","iloveyou",
+                 "111111","123123","abc123","qwerty123","1q2w3e4r","admin","qwertyuiop","654321","555555",
+                 "lovely","7777777","welcome","888888","princess","dragon","password1","123qwe" };
+        for(int i=0; i<findPassword.length;i++){
+        date.put("password",findPassword[i]);
 
       //  while ( true)
-            do {
+
                 Response getResponse = RestAssured
                         .given()
                         .body(date)
@@ -57,9 +58,10 @@ public class FindPassword {
                         .equals("You are NOT authorized");
 
                 System.out.println(password);
-                if (password == false) break;
-            } while (true);
-        System.out.println(date);
+
+            System.out.println(date);
+            if (password == false) break;
+        }
     }
 
 }
