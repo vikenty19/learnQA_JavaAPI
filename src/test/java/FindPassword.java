@@ -16,23 +16,25 @@ public class FindPassword {
     public void findPassword() {
 
 
-        HashMap<String, String> date = new HashMap<>();
-        date.put("login", "super_admin");
+       HashMap<String, String> date = new HashMap<>();
+       date.put("login", "super_admin");
         String[] findPassword ={"password","123456","123456789","12345678","12345","qwerty",
-                "qwerty", "abc123","football","1234567","monkey","111111","letmein","111111","1234567890",
+                "qwerty", "abc123","football","1234567","monkey","letmein","111111","1234567890",
                 "letmein","dragon","baseball","1234","sunshine","iloveyou","trustno1","princess","adobe123[a]",
                 "123123","login","admin","princess","trustno1","monkey","welcome","solo","1q2w3e4r",
                 "master","sunshine","666666","master","photoshop[a]","1qaz2wsx","qwertyuiop",
                 "passw0rd","shadow","lovely","shadow","ashley","master","654321","7777777",
                  "michael","login","!@#$%^&*","jesus","password1","superman","princess","hello",
                 "charlie",	"888888","superman","michael","princess","696969","qwertyuiop","hottie",
-                "freedom","aa123456","qazwsx",	"ninja",	"azerty","loveme","whatever","donald",
-                 "mustang","trustno1","	batman","zaq1zaq1","qazwsx","password1","Football","000000",
+                "freedom","aa123456","qazwsx",	"ninja","azerty","loveme","whatever","donald",
+                 "mustang","trustno1","batman","zaq1zaq1","qazwsx","password1","Football","000000",
                 "trustno1",	"starwars",	"123qwe"};
-        for(int i=0; i<findPassword.length;i++){
+        Arrays.sort(findPassword);
+       System.out.println(Arrays.toString(findPassword));
+       for(int i=0; i<findPassword.length;i++){
         date.put("password",findPassword[i]);
 
-      
+
 
                 Response getResponse = RestAssured
                         .given()
