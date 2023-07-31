@@ -44,7 +44,7 @@ public class FindPassword {
                         .andReturn();
                 getResponse.prettyPrint();
 
-                String authCookie = getResponse.getCookie("auth_Cookie");
+                String authCookie = getResponse.getCookie("auth_cookie");
 
                 System.out.println(authCookie);
                 int statusCode = getResponse.getStatusCode();
@@ -52,7 +52,7 @@ public class FindPassword {
 
 
                 Map<String, String> cookies = new HashMap<>();
-                cookies.put("auth_Cookie", authCookie);
+                cookies.put("auth_cookie", authCookie);
                 Response responseForPassword = RestAssured
                         .given()
                         .body(date)
