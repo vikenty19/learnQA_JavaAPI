@@ -51,6 +51,7 @@ public class HomeworkTest1 {
         headers.put("myHeader2", "myValue2");
         String locationHeader = "https://playground.learnqa.ru/api/long_redirect";
         int statusCode;
+        int count = 0;
         do {
             Response response = RestAssured
                     .given()
@@ -60,16 +61,23 @@ public class HomeworkTest1 {
                     .get(locationHeader)
                     .andReturn();
             statusCode = response.getStatusCode();
-            System.out.println(statusCode);
+    //        System.out.println(statusCode);
+
+            if(statusCode == 301){
+                count++;
+
+            }
+
             //  response.prettyPrint();
             Headers responseHeaders = response.getHeaders();
-            System.out.println(responseHeaders);
+       //     System.out.println(responseHeaders);
 
             locationHeader = response.getHeader("location");
-            System.out.println(locationHeader);
+    //        System.out.println(locationHeader);
         }
         while (statusCode != 200);
-        System.out.println(statusCode);
+        System.out.println("Finally,statusCode is   "+ statusCode);
+        System.out.println("NUMBER OF REDIRECTS IS  " + count );
     }
 
 }

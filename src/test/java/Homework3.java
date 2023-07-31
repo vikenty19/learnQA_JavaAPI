@@ -13,7 +13,7 @@ public class Homework3 {
         if(length<=15){ givenString = "Name doesn't exist";}
         String answer = (length > 15) ? givenString : "Name doesn't exist";
         System.out.println(answer);
-             assertEquals(givenString,answer,"Name doesn't exist");
+          assertEquals(givenString,answer,"Name doesn't exist");
 
     }
 }
