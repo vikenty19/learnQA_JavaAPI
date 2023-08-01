@@ -1,5 +1,6 @@
 import com.fasterxml.jackson.databind.ser.std.MapSerializer;
 import io.restassured.RestAssured;
+import io.restassured.http.Headers;
 import io.restassured.response.Response;
 import org.junit.Assert;
 import org.junit.Test;
@@ -25,13 +26,27 @@ public class Homework3 {
     }
 
      @Test
-      public void checkCookie(){
+      public void assertCookie(){
         Response response = RestAssured
                 .get("https://playground.learnqa.ru/api/homework_cookie")
                 .andReturn();
         Map<String,String> responseCookie = response.getCookies();
          System.out.println(responseCookie);
          String cookie = response.getCookie("HomeWork");
-         assertEquals(cookie,"hw_value");
+         assertEquals("hw_value",cookie);
      }
+    @Test
+    public void assertHeader(){
+        Response response = RestAssured
+                .get("https://playground.learnqa.ru/api/homework_header")
+                .andReturn();
+        response.prettyPrint();
+      Headers responseHeader = response.getHeaders();
+   //     System.out.println(responseHeader);
+        String  header = response.jsonPath().getString("success");
+        System.out.println(header);
+
+       assertEquals("!",header);
+    }
+
 }
