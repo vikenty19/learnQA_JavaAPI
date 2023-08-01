@@ -12,15 +12,15 @@ public class HelloWorldTest {
 
         HashMap<String,String> params = new HashMap<>();
         params.put("name","Santa");
-        //  params.put("name","NY");
+
         JsonPath response = RestAssured
                 .given()
                 .queryParams(params)
                 .get("https://playground.learnqa.ru/api/hello")
                 .jsonPath();
-        //  response.prettyPrint();
+                 response.prettyPrint();
         String answer = response.get("answer");
-        //    System.out.println(answer);
+
         if (answer == null){
             System.out.println("Key 'answer' is absent");
         } else {

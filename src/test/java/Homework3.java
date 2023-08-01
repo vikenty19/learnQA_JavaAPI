@@ -1,6 +1,13 @@
+import com.fasterxml.jackson.databind.ser.std.MapSerializer;
+import io.restassured.RestAssured;
+import io.restassured.response.Response;
 import org.junit.Assert;
+import org.junit.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -16,4 +23,15 @@ public class Homework3 {
           assertEquals(givenString,answer,"Name doesn't exist");
 
     }
+
+     @Test
+      public void checkCookie(){
+        Response response = RestAssured
+                .get("https://playground.learnqa.ru/api/homework_cookie")
+                .andReturn();
+        Map<String,String> responseCookie = response.getCookies();
+         System.out.println(responseCookie);
+         String cookie = response.getCookie("HomeWork");
+         assertEquals(cookie,"hw_value");
+     }
 }

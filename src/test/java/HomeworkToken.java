@@ -62,9 +62,9 @@ public class HomeworkToken {
         System.out.println(statusCode);
         //  response.prettyPrint();
         Headers responseHeaders = response.getHeaders();
-        System.out.println(responseHeaders);
+        System.out.println(responseHeaders + " ------headers");
 
         String locationHeader = response.getHeader("location");
-        System.out.println(locationHeader);
+        System.out.println(locationHeader + "----- location");
     }
 }
