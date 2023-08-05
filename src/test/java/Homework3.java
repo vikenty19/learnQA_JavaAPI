@@ -50,4 +50,40 @@ public class Homework3 {
        assertEquals("!",header);
     }
 
+
+   @ParameterizedTest
+   @ValueSource(strings = {"Mozilla/5.0 (Linux; U; Android 4.0.2; en-us; Galaxy Nexus Build/ICL53F) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30"})
+    public void checkUserAgent(String name){
+        Map<String,String> headers = new HashMap<>();
+        headers.put("user-agent",name);
+        Response response =RestAssured
+                .given()
+                .headers(headers)
+                .get("https://playground.learnqa.ru/ajax/api/user_agent_check")
+                .andReturn();
+        response.prettyPrint();
+        JsonPath jsonPath = response.jsonPath();
+        String platform = jsonPath.get("platform");
+        String browser = jsonPath.get("browser");
+        String device = jsonPath.get("device");
+        if(platform.equalsIgnoreCase("Unknown")
+                || (browser.equalsIgnoreCase("no"))
+                 || (device.equalsIgnoreCase("Unknown"))){
+            System.out.println(name);
+            if(platform.equalsIgnoreCase("Unknown")){
+                System.out.println("platform is unknown");
+            }
+            if(browser.equalsIgnoreCase("no")){
+                System.out.println("browser is Unknown");
+            }
+            if(device.equalsIgnoreCase("Unknown")){
+                System.out.println("device is Unknown");
+            }
+        }
+
+   }
+
+
+
 }
+
