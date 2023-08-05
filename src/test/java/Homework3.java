@@ -1,6 +1,7 @@
 import com.fasterxml.jackson.databind.ser.std.MapSerializer;
 import io.restassured.RestAssured;
 import io.restassured.http.Headers;
+import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.junit.Assert;
 import org.junit.Test;
@@ -40,12 +41,12 @@ public class Homework3 {
         Response response = RestAssured
                 .get("https://playground.learnqa.ru/api/homework_header")
                 .andReturn();
-        response.prettyPrint();
+//        response.prettyPrint();
       Headers responseHeader = response.getHeaders();
    //     System.out.println(responseHeader);
         String  header = response.jsonPath().getString("success");
         System.out.println(header);
-
+         assertTrue(responseHeader.hasHeaderWithName("success"));
        assertEquals("!",header);
     }
 
