@@ -67,13 +67,13 @@ public class Homework3 {
         String browser = jsonPath.get("browser");
         String device = jsonPath.get("device");
         if(platform.equalsIgnoreCase("Unknown")
-                || (browser.equalsIgnoreCase("no"))
+                || (browser.equalsIgnoreCase("Unknown"))
                  || (device.equalsIgnoreCase("Unknown"))){
             System.out.println(name);
             if(platform.equalsIgnoreCase("Unknown")){
                 System.out.println("platform is unknown");
             }
-            if(browser.equalsIgnoreCase("no")){
+            if(browser.equalsIgnoreCase("Unknown")){
                 System.out.println("browser is Unknown");
             }
             if(device.equalsIgnoreCase("Unknown")){
