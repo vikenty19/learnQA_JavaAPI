@@ -34,15 +34,15 @@ public class RestTraining {
     @Test
     public void getBookingName() {
         Response response = RestAssured
-                .get("https://restful-booker.herokuapp.com/booking/1")
+                .get("https://restful-booker.herokuapp.com/booking/5")
                 .andReturn();
         response.prettyPrint();
         Assert.assertEquals(response.getStatusCode(), 200);
         String bookingFirstName = response.jsonPath().getString("firstname");
         String bookingLastName = response.jsonPath().getString("lastname");
         System.out.print(bookingFirstName +  "   last name   " + bookingLastName);
-        //   Assert.assertFalse(bookingId.isEmpty())
-   assertAll();
+        Assert.assertEquals(bookingFirstName,"Susan","doesn't match");
+
 
     }
 }
