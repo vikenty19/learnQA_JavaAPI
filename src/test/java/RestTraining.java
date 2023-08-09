@@ -1,3 +1,4 @@
+import com.fasterxml.jackson.databind.util.JSONPObject;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import org.junit.Assert;
@@ -41,7 +42,7 @@ public class RestTraining {
         String bookingFirstName = response.jsonPath().getString("firstname");
         String bookingLastName = response.jsonPath().getString("lastname");
         System.out.print(bookingFirstName +  "   last name   " + bookingLastName);
-        Assert.assertEquals(bookingFirstName,"Susan","doesn't match");
+        Assert.assertEquals("doesn't match",bookingFirstName,"Susan");
 
 
     }
