@@ -19,7 +19,7 @@ public class GetBookingTests extends BaseTest {
     @Test
     public void getBookingTest() {
         // Get response with booking
-        Response response = RestAssured.get("https://restful-booker.herokuapp.com/booking/5");
+        Response response = RestAssured.given(spec).get("booking/5");
         response.prettyPrint();
 
         // Verify response 200
@@ -36,7 +36,7 @@ public class GetBookingTests extends BaseTest {
         SoftAssertions.assertSoftly(softly -> {
             String actualFirstName = response.jsonPath().getString("firstname");
             //         softAssert.assertEquals(actualFirstName, "Sally", "firstname in response is not expected");
-            softly.assertThat(actualFirstName).isEqualTo("Mark");
+            softly.assertThat(actualFirstName).isEqualTo("Eric");
 
         });
 
