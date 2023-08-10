@@ -1,4 +1,8 @@
 import io.restassured.RestAssured;
+import io.restassured.http.Cookie;
+import io.restassured.http.Cookies;
+import io.restassured.http.Header;
+import io.restassured.http.Headers;
 import io.restassured.response.Response;
 import org.junit.Assert;
 import org.junit.Test;
@@ -20,8 +24,12 @@ public class GetBookingTests extends BaseTest {
 
         // Verify response 200
         Assert.assertEquals(response.getStatusCode(), 200);
-        ;
-
+        Headers headers = response.getHeaders();
+        System.out.println(headers);
+        Header header1 = headers.get("Date");
+        System.out.println(header1);
+        Cookies cookies = response.getDetailedCookies();
+        System.out.println("cookies  == " + cookies);
         // Verify All fields
         //    SoftAssert softAssert = new SoftAssert();
         //    SoftAssertions softly = new SoftAssertions();
@@ -56,24 +64,38 @@ public class GetBookingTests extends BaseTest {
     }
 
     @Test
-    //         public  class BaseTest {
+    public void getBookingTestWithParams() {
+      spec.queryParam("firstname", "Mark");
+     //   Map<String,String> params = new HashMap<>();
+    //    params.put("firstname", "Mark");
+    //   Response response = RestAssured.given(spec).queryParams(params).get("/booking");
+        Response response = RestAssured.given(spec).get("/booking");
+        response.prettyPrint();
+
+    }
+
+    @Test
+
 
     public void createNewBooking() {
 
 
         Response response = createBooking();
         response.prettyPrint();
+        int bookingid = response.jsonPath().getInt("bookingid");
+        System.out.println(bookingid);
 
-
-        //    return response;
 
     }
+
     @Test
     public void updateBookingTest() {
         Response responseCreate = updateBooking();
         responseCreate.prettyPrint();
-       int bookingid = responseCreate.jsonPath().getInt("bookingid");
-        System.out.println(bookingid);
+        responseCreate.getCookies();
+        System.out.println(responseCreate);
+//       int bookingid = responseCreate.jsonPath().getInt("bookingid");
+        //      System.out.println(bookingid);
 
 
     }
