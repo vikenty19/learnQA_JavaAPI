@@ -20,7 +20,7 @@ public class LoginTests {
     String cookie;
     String header;
     int authId;
-
+    protected RequestSpecification spec;
     @BeforeEach
     public void logIn() {
         Map<String, String> authData = new HashMap<>();
@@ -35,7 +35,7 @@ public class LoginTests {
         this.authId = responseAuth.jsonPath().getInt("user_id");
     }
 
-    protected RequestSpecification spec;
+
 
     @Test
     public void testAuthUser() {
