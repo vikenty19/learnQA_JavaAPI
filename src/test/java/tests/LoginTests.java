@@ -16,8 +16,9 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.HashMap;
 import java.util.Map;
-
+import lib.Assertions;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class LoginTests extends BaseTest {
     String cookie;
@@ -44,13 +45,18 @@ public class LoginTests extends BaseTest {
     public void testAuthUser() {
 
 
-        JsonPath userConfirmId = RestAssured.given()
+        Response userConfirmId = RestAssured.given()
                 .header("x-csrf-token", this.header)
                 .cookie("auth_sid", this.cookie)
                 .get("https://playground.learnqa.ru/api/user/auth")
-                .jsonPath();
+                .andReturn();
         userConfirmId.prettyPrint();
-        Assert.assertEquals(userConfirmId.getInt("user_id"), authId);
+        System.out.println(userConfirmId.asString());
+
+        Assertions.assertJsonByName(userConfirmId,"user_id",this.authId);
+     /*   int authIdOnCheck = userConfirmId.getInt("user_id");
+        assertTrue(authIdOnCheck > 0,"unexpected user id");
+        Assert.assertEquals(userConfirmId.getInt("user_id"), authId);*/
     }
 
     @ParameterizedTest
@@ -74,8 +80,12 @@ public class LoginTests extends BaseTest {
             throw new IllegalArgumentException("Value is  " + value);
         }
 
-        JsonPath checkUserAuth = spec1.get().jsonPath();
-        assertEquals(0, checkUserAuth.getInt("user_id"), "user_id should be  0");
+        Response checkUserAuth = spec1.get().andReturn();
+        Assertions.assertJsonByName(checkUserAuth,"user_id",0);
+       // assertEquals(0, checkUserAuth.getInt("user_id"), "user_id should be  0");
+        System.out.println(checkUserAuth.asString());
+        System.out.println(checkUserAuth.statusCode());
+        System.out.println("user with value  '" + value + "'doesn't exist");
     }
 
 }
