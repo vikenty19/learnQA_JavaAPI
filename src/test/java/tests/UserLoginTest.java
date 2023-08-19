@@ -4,14 +4,16 @@ import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import lib.Assertions;
 import lib.BaseTest;
+import lib.DataGenerator;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class UserLoginTest  extends BaseTest {
+
     @Test
-    public void LoginExistingEmailUser(){
+    public void loginExistingEmailUser(){
 
         String email = "vinkotov@example.com";
         Map<String,String> userDate = new HashMap<>();
@@ -26,11 +28,14 @@ public class UserLoginTest  extends BaseTest {
                 .post("https://playground.learnqa.ru/api/user/")
                 .andReturn();
         System.out.println(responseCreateAuth.asString());
-        System.out.println(responseCreateAuth.statusCode());;
+        System.out.println(responseCreateAuth.statusCode());
         Assertions.assertResponseTextEquals(responseCreateAuth,"Users with email '" + email + "' already exists");
         Assertions.assertResponseCodeEquals(responseCreateAuth, 400);
     }
 }
+
+
+
 
 
 

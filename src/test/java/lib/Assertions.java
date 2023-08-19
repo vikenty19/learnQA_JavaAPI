@@ -18,5 +18,7 @@ public class Assertions {
     public static void  assertResponseCodeEquals(Response response,int expectedAnswer) {
         assertEquals(expectedAnswer,response.statusCode());
     }
-
+    public static void assertResponseHasKey(Response response,String expectedFieldName){
+      response.then().assertThat().body("$", hasKey(expectedFieldName));
+    }
 }
