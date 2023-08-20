@@ -51,7 +51,7 @@ public class UserLoginTest  extends BaseTest {
         System.out.println(responseCreateAuth.statusCode());
     //    Assertions.assertResponseTextEquals(responseCreateAuth,"Users with email '" + email + "' already exists");
         Assertions.assertResponseCodeEquals(responseCreateAuth, 200);
-        Assertions.assertResponseHasKey(responseCreateAuth, "id");
+        Assertions.assertResponseHasField(responseCreateAuth, "id");
 
     }
 

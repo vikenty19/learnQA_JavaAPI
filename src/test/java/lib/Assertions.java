@@ -19,10 +19,17 @@ public class Assertions {
     public static void  assertResponseCodeEquals(Response response,int expectedAnswer) {
         assertEquals(expectedAnswer,response.statusCode());
     }
-    public static void assertResponseHasKey(Response response,String expectedFieldName){
+    public static void assertResponseHasField(Response response, String expectedFieldName){
       response.then().assertThat().body("$", hasKey(expectedFieldName));
     }
-    public static void assertResponseHasNotKey(Response response,String expectedFieldName){
+    public static void assertResponseHasFields(Response response,String[]expectedFieldNames) {
+        for (String expectedFieldName : expectedFieldNames) {
+            assertResponseHasField(response, expectedFieldName);
+        }
+    }
+    public static void assertResponseHasNotField(Response response, String expectedFieldName){
         response.then().assertThat().body("$", not(hasKey(expectedFieldName)));
     }
+
+
 }
