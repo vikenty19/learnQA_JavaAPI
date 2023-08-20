@@ -46,7 +46,9 @@ public class GetUserData extends BaseTest {
                 .get("https://playground.learnqa.ru/api/user/2")
                 .andReturn();
         String[] expectedFields = {"username", "email", "firstName", "lastName"};
-        (Assertions.assertResponseHasFields(responseGetUserData, expectedFields);
+       Assertions.assertResponseHasFields(responseGetUserData, expectedFields);
+
+
 
 
     /*    Assertions.assertResponseHasField(responseGetUserData,"username");

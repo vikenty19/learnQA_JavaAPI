@@ -24,7 +24,7 @@ public class Assertions {
     }
     public static void assertResponseHasFields(Response response,String[]expectedFieldNames) {
         for (String expectedFieldName : expectedFieldNames) {
-            assertResponseHasField(response, expectedFieldName);
+          assertResponseHasField(response, expectedFieldName);
         }
     }
     public static void assertResponseHasNotField(Response response, String expectedFieldName){
