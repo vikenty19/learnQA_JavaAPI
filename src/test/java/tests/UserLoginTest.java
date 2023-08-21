@@ -18,10 +18,12 @@ public class UserLoginTest  extends BaseTest {
         String email = "vinkotov@example.com";
         Map<String,String> userDate = new HashMap<>();
         userDate.put("email",email );
-        userDate.put("password", "123");
+        userDate = DataGenerator.getRegistrationData(userDate);
+  /*      userDate.put("password", "123");
         userDate.put("username", "learnqa");
         userDate.put("firstName", "learnqa");
-        userDate.put("lastName", "learnqa");
+        userDate.put("lastName", "learnqa");*/
+        System.out.println(userDate);
         Response responseCreateAuth = RestAssured
                 .given()
                 .body(userDate)
@@ -35,13 +37,15 @@ public class UserLoginTest  extends BaseTest {
     @Test
     public void loginNewEmailUser(){
 
-        String email = DataGenerator.getRandoEmail();
-        Map<String,String> userDate = new HashMap<>();
-        userDate.put("email",email );
+    //    String email = DataGenerator.getRandoEmail();
+     //   Map<String,String> userDate = new HashMap<>();
+        Map<String,String> userDate = DataGenerator.getRegistrationData();
+
+     /*   userDate.put("email",email );
         userDate.put("password", "123");
         userDate.put("username", "learnqa");
         userDate.put("firstName", "learnqa");
-        userDate.put("lastName", "learnqa");
+        userDate.put("lastName", "learnqa");*/
         Response responseCreateAuth = RestAssured
                 .given()
                 .body(userDate)
