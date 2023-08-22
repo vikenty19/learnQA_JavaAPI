@@ -65,9 +65,10 @@ public class UserLoginTest extends BaseTest {
 
     }
 
-    @Test
-    public void loginWrongEmailUser() {
-        String email = "vinkotovexample.ru";
+    @ParameterizedTest
+    @ValueSource(strings = {"vinkotovexample.ru","    ","55555555"})
+    public void loginWrongEmailUser(String email) {
+      //  String email = "vinkotovexample.ru";
         Map<String, String> userData = new HashMap<>();
         userData.put("email", email);
         userData = DataGenerator.getRegistrationData(userData);
