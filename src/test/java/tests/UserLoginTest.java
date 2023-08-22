@@ -100,13 +100,13 @@ public class UserLoginTest extends BaseTest {
        Response responseCreateAuth = RestAssured
                 .given()
                 .body(loginData)
-                .get("https://playground.learnqa.ru/api/user/")
+                .post("https://playground.learnqa.ru/api/user/")
                 .andReturn();
         String cookie= responseCreateAuth.getCookie("id");
-        System.out.println(cookie);
+   //     System.out.println(cookie);
 
-        System.out.println(responseEmptyFieldUser.asString());
-        System.out.println(responseEmptyFieldUser.statusCode());
+  //      System.out.println(responseEmptyFieldUser.asString());
+  //      System.out.println(responseEmptyFieldUser.statusCode());
 
         Assertions.assertResponseTextEquals(responseEmptyFieldUser,"The value of '"+field+"' field is too short");
         Assertions.assertResponseCodeEquals(responseEmptyFieldUser,400);
