@@ -10,14 +10,14 @@ import org.junit.jupiter.api.Test;
 import java.util.HashMap;
 import java.util.Map;
 
-public class UserLoginTest  extends BaseTest {
+public class UserLoginTest extends BaseTest {
 
     @Test
-    public void loginExistingEmailUser(){
+    public void loginExistingEmailUser() {
 
         String email = "vinkotov@example.com";
-        Map<String,String> userDate = new HashMap<>();
-        userDate.put("email",email );
+        Map<String, String> userDate = new HashMap<>();
+        userDate.put("email", email);
         userDate = DataGenerator.getRegistrationData(userDate);
   /*      userDate.put("password", "123");
         userDate.put("username", "learnqa");
@@ -31,15 +31,16 @@ public class UserLoginTest  extends BaseTest {
                 .andReturn();
         System.out.println(responseCreateAuth.asString());
         System.out.println(responseCreateAuth.statusCode());
-        Assertions.assertResponseTextEquals(responseCreateAuth,"Users with email '" + email + "' already exists");
+        Assertions.assertResponseTextEquals(responseCreateAuth, "Users with email '" + email + "' already exists");
         Assertions.assertResponseCodeEquals(responseCreateAuth, 400);
     }
-    @Test
-    public void loginNewEmailUser(){
 
-    //    String email = DataGenerator.getRandoEmail();
-     //   Map<String,String> userDate = new HashMap<>();
-        Map<String,String> userDate = DataGenerator.getRegistrationData();
+    @Test
+    public void loginNewEmailUser() {
+
+        //    String email = DataGenerator.getRandoEmail();
+        //   Map<String,String> userDate = new HashMap<>();
+        Map<String, String> userDate = DataGenerator.getRegistrationData();
 
      /*   userDate.put("email",email );
         userDate.put("password", "123");
@@ -53,11 +54,31 @@ public class UserLoginTest  extends BaseTest {
                 .andReturn();
         System.out.println(responseCreateAuth.asString());
         System.out.println(responseCreateAuth.statusCode());
-    //    Assertions.assertResponseTextEquals(responseCreateAuth,"Users with email '" + email + "' already exists");
+        //    Assertions.assertResponseTextEquals(responseCreateAuth,"Users with email '" + email + "' already exists");
         Assertions.assertResponseCodeEquals(responseCreateAuth, 200);
         Assertions.assertResponseHasField(responseCreateAuth, "id");
 
     }
+
+    @Test
+    public void loginWrongEmailUser() {
+        String email = "vinkotovexample.ru";
+        Map<String, String> userData = new HashMap<>();
+        userData.put("email", email);
+        userData = DataGenerator.getRegistrationData(userData);
+        Response responseWrongEmailUser = RestAssured
+                .given()
+                .body(userData)
+                .post("https://playground.learnqa.ru/api/user/")
+                .andReturn();
+
+        System.out.println(responseWrongEmailUser.asString());
+        System.out.println(responseWrongEmailUser.statusCode());
+        Assertions.assertResponseTextEquals(responseWrongEmailUser,"Invalid email format");
+        Assertions.assertResponseCodeEquals(responseWrongEmailUser,400);
+
+    }
+
 
 }
 

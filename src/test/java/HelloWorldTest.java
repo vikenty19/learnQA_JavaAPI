@@ -19,7 +19,7 @@ public class HelloWorldTest {
                 .get("https://playground.learnqa.ru/api/hello")
                 .jsonPath();
                  response.prettyPrint();
-        String answer = response.get("answer");
+        String answer = response.getString("answer");
 
         if (answer == null){
             System.out.println("Key 'answer' is absent");
