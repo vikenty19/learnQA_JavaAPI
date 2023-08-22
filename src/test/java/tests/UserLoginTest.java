@@ -1,14 +1,19 @@
 package tests;
 
 import io.restassured.RestAssured;
+import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import lib.Assertions;
 import lib.BaseTest;
 import lib.DataGenerator;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class UserLoginTest extends BaseTest {
 
@@ -74,13 +79,43 @@ public class UserLoginTest extends BaseTest {
 
         System.out.println(responseWrongEmailUser.asString());
         System.out.println(responseWrongEmailUser.statusCode());
-        Assertions.assertResponseTextEquals(responseWrongEmailUser,"Invalid email format");
-        Assertions.assertResponseCodeEquals(responseWrongEmailUser,400);
+        Assertions.assertResponseTextEquals(responseWrongEmailUser, "Invalid email format");
+        Assertions.assertResponseCodeEquals(responseWrongEmailUser, 400);
+
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"email", "password", "username", "firstName", "lastName"})
+
+    public void loginWithOneEmptyField(String field) {
+        String emptyField = "";
+        Map<String, String> loginData = new HashMap<>();
+          loginData.put(field,emptyField);
+          loginData= DataGenerator.getRegistrationData(loginData);
+        Response responseEmptyFieldUser = RestAssured
+                .given()
+                .body(loginData)
+                .post("https://playground.learnqa.ru/api/user/")
+                .andReturn();
+       Response responseCreateAuth = RestAssured
+                .given()
+                .body(loginData)
+                .get("https://playground.learnqa.ru/api/user/")
+                .andReturn();
+        String cookie= responseCreateAuth.getCookie("id");
+        System.out.println(cookie);
+
+        System.out.println(responseEmptyFieldUser.asString());
+        System.out.println(responseEmptyFieldUser.statusCode());
+
+        Assertions.assertResponseTextEquals(responseEmptyFieldUser,"The value of '"+field+"' field is too short");
+        Assertions.assertResponseCodeEquals(responseEmptyFieldUser,400);
+        assertEquals(null,cookie);
+        }
 
     }
 
 
-}
 
 
 
