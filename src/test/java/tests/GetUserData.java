@@ -46,7 +46,7 @@ public class GetUserData extends BaseTest {
                 .get("https://playground.learnqa.ru/api/user/2")
                 .andReturn();
         String[] expectedFields = {"username", "email", "firstName", "lastName"};
-       Assertions.assertResponseHasFields(responseGetUserData, expectedFields);
+        Assertions.assertResponseHasFields(responseGetUserData, expectedFields);
 
 
 
@@ -57,5 +57,32 @@ public class GetUserData extends BaseTest {
         Assertions.assertResponseHasField(responseGetUserData,"lastName");*/
     }
 
+    @Test
+    public void getAnotherUserData() {
+        Map<String, String> authData = new HashMap<>();
+        authData.put("email", "vinkotov@example.com");
+        authData.put("password", "1234");
+        Response responseGetAuth = RestAssured
+                .given()
+                .body(authData)
+                .post("https://playground.learnqa.ru/api/user/login")
+                .andReturn();
+        String header = getHeader(responseGetAuth, "x-csrf-token");
+        String cookie = getCookie(responseGetAuth, "auth_sid");
+        for (int id = 1; id <= 10; id++) {
+            Response responseGetAnotherUserData = RestAssured
+                    .given()
+                    .header("x-csrf-token", header)
+                    .cookie("auth_sid", cookie)
+                    .get("https://playground.learnqa.ru/api/user/" + id)
+                    .andReturn();
+            System.out.println(responseGetAnotherUserData.asString());
+            String answer = responseGetAnotherUserData.getCookie("id");
+            System.out.println(answer);
 
+            //   String[] expectedFields = {"username", "email", "firstName", "lastName"};
+            // Assertions.assertResponseHasField(responseGetAnotherUserData,"username");
+        }
+
+    }
 }
