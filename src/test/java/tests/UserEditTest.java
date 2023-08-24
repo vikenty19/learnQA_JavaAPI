@@ -26,6 +26,7 @@ public class UserEditTest extends BaseTest {
                 .post("https://playground.learnqa.ru/api/user/")
                 .jsonPath();
         String userId = responseCreateAuth.getString("id");
+   //  responseCreateAuth.prettyPrint();
 
         //Login user
 
@@ -37,7 +38,7 @@ public class UserEditTest extends BaseTest {
                 .body(authData)
                 .post("https://playground.learnqa.ru/api/user/login")
                 .andReturn();
-
+        System.out.println(responseLoginUser.asString());
         // Edit User
 
         String newUserName = "NEW NAME";
@@ -59,7 +60,7 @@ public class UserEditTest extends BaseTest {
                 .cookie("auth_sid", this.getCookie(responseLoginUser, "auth_sid"))
                 .get("https://playground.learnqa.ru/api/user/" + userId)
                 .andReturn();
-        System.out.println(responseGetUserNewData.asString());
+       System.out.println(responseGetUserNewData.asString());
 
         Assertions.assertJsonByName(responseGetUserNewData, "firstName", newUserName);
     }
@@ -136,12 +137,12 @@ public class UserEditTest extends BaseTest {
                 .put("https://playground.learnqa.ru/api/user/" + (userId+1))
                 .andReturn();
 
-        System.out.println(responseEditUserData.asString());
+  //      System.out.println(responseEditUserData.asString());
         Response responseGetUserNewData = RestAssured
                 .given()
                 .header("x-csrf-token", responseLoginUser.getHeader("x-csrf-token"))
                 .cookie("auth_sid", this.getCookie(responseLoginUser, "auth_sid"))
-                .get("https://playground.learnqa.ru/api/user/" + userId+1)
+                .get("https://playground.learnqa.ru/api/user/" + (userId+1))
                 .andReturn();
         System.out.println(responseGetUserNewData.asString());
 
