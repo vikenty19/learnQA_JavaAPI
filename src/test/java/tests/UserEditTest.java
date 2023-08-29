@@ -101,13 +101,25 @@ public class UserEditTest extends BaseTest {
     public void changeOtherUserData() {
 
         Map<String, String> userData = new HashMap<>();
+        String newEmail = "vinkotov@example.com";
         userData = DataGenerator.getRegistrationData();
-        JsonPath responseCreateLoginData = RestAssured
+   //     System.out.println(userData);
+  //      userData.put("email",newEmail);
+  //      System.out.println(userData);
+        JsonPath responseCreateAuth = RestAssured
                 .given()
                 .body(userData)
                 .post("https://playground.learnqa.ru/api/user/")
                 .jsonPath();
-        int userId = responseCreateLoginData.getInt("id");
+        String userId = responseCreateAuth.getString("id");
+  /*      JsonPath responseCreateLoginData = RestAssured
+                .given()
+                .body(userData)
+                .post("https://playground.learnqa.ru/api/user/")
+                .jsonPath();
+        responseCreateLoginData.prettyPrint();
+       String userId = responseCreateLoginData.getString("id");*/
+
         System.out.println(userId);
 
         Map<String, String> authData = new HashMap<>();
@@ -126,15 +138,15 @@ public class UserEditTest extends BaseTest {
 
 
 
-       String newUserName = "NEW NAME";
+       String newUserEmail = "NEW NAME";
         Map<String, String> newData = new HashMap<>();
-        newData.put("firstName", newUserName);
+        newData.put("email", newUserEmail);
         Response responseEditUserData = RestAssured
                 .given()
                 .header("x-csrf-token", responseLoginUser.getHeader("x-csrf-token"))
                 .cookie("auth_sid", this.getCookie(responseLoginUser, "auth_sid"))
                 .body(newData)
-                .put("https://playground.learnqa.ru/api/user/" + (userId+1))
+                .put("https://playground.learnqa.ru/api/user/" + (userId))
                 .andReturn();
 
   //      System.out.println(responseEditUserData.asString());
@@ -142,7 +154,7 @@ public class UserEditTest extends BaseTest {
                 .given()
                 .header("x-csrf-token", responseLoginUser.getHeader("x-csrf-token"))
                 .cookie("auth_sid", this.getCookie(responseLoginUser, "auth_sid"))
-                .get("https://playground.learnqa.ru/api/user/" + (userId+1))
+                .get("https://playground.learnqa.ru/api/user/" + (userId))
                 .andReturn();
         System.out.println(responseGetUserNewData.asString());
 
