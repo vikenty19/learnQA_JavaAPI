@@ -2,6 +2,8 @@ package tests;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class TasksFoLoop {
@@ -25,5 +27,18 @@ public class TasksFoLoop {
         }
 
         }
+    }
+    @Test
+    public void stringToInt(){
+
+        String string = "3 songs";
+
+
+        char number = string.charAt(0);
+        System.out.println(number);
+        int num = Character.getNumericValue(number);
+        System.out.println(num);
+//#playlistWrapper .item-container .title
+
     }
 }

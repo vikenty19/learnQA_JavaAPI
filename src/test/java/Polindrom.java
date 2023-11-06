@@ -24,13 +24,21 @@ public class Polindrom {
 
     @Test
     public void checkWord() {
-        System.out.println(isPalindrome("Aaaaa"));
-
+        String s = "Hello world";
+        String s1= "aaaaaaaaaa";
+ //       System.out.println(isPalindrome(s1));
+String s3 ="My example is example is is";
         List<Integer> number1 = new ArrayList<>();
         number1.add(3);
         number1.add(1);
         number1.add(3);
         deleteThree(number1);
+//        System.out.println(40 +50+ "  ");
+//        System.out.println( "  "+(40 +50));
+        int a = s.indexOf("o");
+        System.out.println(s.substring(a));
+        System.out.println(a);
+        System.out.println(s3.replaceAll("is","on"));
 
     }
 
@@ -54,10 +62,9 @@ public class Polindrom {
 
     }
 
-
+@Test
 
     public void deleteThree(List<Integer> numbers) {
-
 
 
        // for (Integer num : numbers) {
@@ -68,6 +75,7 @@ public class Polindrom {
 
        }
         System.out.println(numbers);
+        System.out.println("qq "+40+50);
     }
 
 
