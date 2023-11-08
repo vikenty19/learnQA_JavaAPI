@@ -18,7 +18,7 @@ public class HelloWorldTest {
                 .queryParams(params)
                 .get("https://playground.learnqa.ru/api/hello")
                 .jsonPath();
-        response.prettyPrint();
+     
         String answer = response.getString("answer");
 
         if (answer == null) {
@@ -45,6 +45,17 @@ public class HelloWorldTest {
        int count = s.indexOf("@");
         System.out.println(s.substring(s.indexOf("@")));
         System.out.println(s.toLowerCase().contains("string"));
+
+    }
+    @Test
+    public void getWithParam(){
+
+        Response response = RestAssured
+                .given()
+                .queryParam("name","Vikenty")
+                .get("https://playground.learnqa.ru/api/hello")
+                .andReturn();
+        response.prettyPrint();
 
     }
 }
