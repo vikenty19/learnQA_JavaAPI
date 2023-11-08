@@ -18,8 +18,9 @@ public class HomeworkTest1 {
                 .get("https://playground.learnqa.ru/api/get_json_homework")
                 .jsonPath();
         response.prettyPrint();
-        System.out.println(response.getString("messages[1].message"));
-    }
+        System.out.println(response.getString("messages[0].timestamp"));
+       // System.out.println(response.get("messages.get(messages").get(1).get("message"))");
+    }                                  //        messages.get("messages").get(1).get("message");
 
     @Test
     public void testRestAssured() {
