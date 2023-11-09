@@ -54,9 +54,38 @@ public class GetCookiesAndHeaders {
     System.out.println();*/
         System.out.println("response Cookie\n"+ responseCookie);
         System.out.println(responseCookie);
-        String response1Cookie = response.getCookie("auth_cookie");
+        String response1Cookie = response.getCookie("auth_cookie");//просто чтобы проверить разницу мар и стринг
         System.out.println(response1Cookie);
 
     }
 
+    @Test
+    public void getCookieAndCheckAuthorize(){
+        Map<String, String> data = new HashMap<>();
+        data.put("login", "secret_login");
+        data.put("password", "secret_pass");
+        Response responseForGet = RestAssured
+                .given()
+                .body(data)
+                .when()
+                .post("https://playground.learnqa.ru/api/get_auth_cookie")
+                .andReturn();
+
+     String authCookie = responseForGet.getCookie("auth_cookie");
+        Map<String,String >cookieForCheck = new HashMap<>();
+     if (authCookie != null) { // if credentials are invalid
+     cookieForCheck.put("auth_cookie",authCookie);}
+     // pass cookie and body to authorize
+        Response responseForCheck = RestAssured
+                .given()
+                .body(data)
+                .cookies(cookieForCheck)
+                .when()
+                .get("https://playground.learnqa.ru/api/check_auth_cookie")
+                .andReturn();
+
+            System.out.println(cookieForCheck);
+            responseForCheck.print();
+
+    }
 }
