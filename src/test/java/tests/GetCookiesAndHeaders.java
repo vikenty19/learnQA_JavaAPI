@@ -73,7 +73,8 @@ public class GetCookiesAndHeaders {
 
      String authCookie = responseForGet.getCookie("auth_cookie");
         Map<String,String >cookieForCheck = new HashMap<>();
-     if (authCookie != null) { // if credentials are invalid
+        // check if credentials are valid or not
+     if (authCookie != null) {
      cookieForCheck.put("auth_cookie",authCookie);}
      // pass cookie and body to authorize
         Response responseForCheck = RestAssured
