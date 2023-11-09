@@ -52,7 +52,7 @@ public class GetCookiesAndHeaders {
     System.out.println("\nresponse Header");
     System.out.println(responseHeader);
     System.out.println();*/
-        System.out.println("\nresponse Cookie");
+        System.out.println("response Cookie\n"+ responseCookie);
         System.out.println(responseCookie);
         String response1Cookie = response.getCookie("auth_cookie");
         System.out.println(response1Cookie);
