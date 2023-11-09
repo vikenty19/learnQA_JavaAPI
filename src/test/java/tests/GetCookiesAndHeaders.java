@@ -76,6 +76,8 @@ public class GetCookiesAndHeaders {
         // check if credentials are valid or not
      if (authCookie != null) {
      cookieForCheck.put("auth_cookie",authCookie);}
+     else {
+         System.out.println("Check login and password");}
      // pass cookie and body to authorize
         Response responseForCheck = RestAssured
                 .given()
