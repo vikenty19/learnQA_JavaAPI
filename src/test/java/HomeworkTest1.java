@@ -1,4 +1,5 @@
 import io.restassured.RestAssured;
+import io.restassured.http.Cookies;
 import io.restassured.http.Headers;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
@@ -30,19 +31,21 @@ public class HomeworkTest1 {
 
         Response response = RestAssured
                 .given()
+         //       .headers(headers) // its doesn't have any effect on a result
                 .redirects()
+
                 .follow(false)
                 .when()
                 .get("https://playground.learnqa.ru/api/long_redirect")
                 .andReturn();
         int statusCode = response.getStatusCode();
         System.out.println(statusCode);
-        //  response.prettyPrint();
-        Headers responseHeaders = response.getHeaders();
+      //    response.prettyPrint();
+      Headers responseHeaders = response.getHeaders();
         System.out.println(responseHeaders);
 
         String locationHeader = response.getHeader("location");
-        System.out.println(locationHeader);
+        System.out.println("Redirect location:  " + locationHeader);
     }
 
     @Test
