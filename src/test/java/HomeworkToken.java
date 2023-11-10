@@ -6,10 +6,9 @@ import io.restassured.response.Response;
 import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+
+import java.util.*;
+
 import org.junit.jupiter.api.Assertions;
 
 public class HomeworkToken {
@@ -81,7 +80,10 @@ public class HomeworkToken {
                 .jsonPath();
         response.prettyPrint();
         Map<String,String>params = new HashMap<>();
-        String token = response.getString("token");
+        String token= response.getString("token");
+        // Make token invalid
+        String token1 = response.getString("token").substring(1);
+               // check with valid token
         int time = response.getInt("seconds");
         params.put("token",token);
         Thread.sleep(time*900);
