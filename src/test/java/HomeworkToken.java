@@ -2,9 +2,9 @@ import io.restassured.RestAssured;
 import io.restassured.http.Headers;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -70,4 +70,32 @@ public class HomeworkToken {
         String locationHeader = response.getHeader("location");
         System.out.println(locationHeader + "----- location");
     }
+    @Test// повторно для практики
+    public void longJob() throws InterruptedException {
+
+        JsonPath response = RestAssured
+                .when()
+                .get(" https://playground.learnqa.ru/ajax/api/longtime_job")
+                .jsonPath();
+        response.prettyPrint();
+        Map<String,String>params = new HashMap<>();
+        String token = response.getString("token");
+        int time = response.getInt("seconds");
+        params.put("token",token);
+        Thread.sleep(time*900);
+        System.out.println(time*900);
+   JsonPath responseWithToken = RestAssured
+                .given()
+                .queryParams(params)
+                .when()
+                .get(" https://playground.learnqa.ru/ajax/api/longtime_job")
+                .jsonPath();
+       responseWithToken.prettyPrint();
+
+
+
+
+
+    }
+
 }
