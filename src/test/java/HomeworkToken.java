@@ -3,12 +3,14 @@ import io.restassured.http.Headers;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 
+import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import org.junit.jupiter.api.Assertions;
 
 public class HomeworkToken {
 
@@ -91,6 +93,8 @@ public class HomeworkToken {
                 .get(" https://playground.learnqa.ru/ajax/api/longtime_job")
                 .jsonPath();
        responseWithToken.prettyPrint();
+       Assertions.assertEquals("Job is ready", responseWithToken.getString("status"));
+       Assertions.assertNotNull(responseWithToken.getString("result"));
 
 
 
