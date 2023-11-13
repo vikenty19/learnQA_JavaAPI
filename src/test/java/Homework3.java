@@ -45,17 +45,17 @@ public class Homework3 {
         Response response = RestAssured
                 .get("https://playground.learnqa.ru/api/homework_header")
                 .andReturn();
-       response.prettyPrint();
+        response.prettyPrint();
         Headers responseHeader = response.getHeaders();
-         System.out.println(responseHeader);
+        System.out.println(responseHeader);
         String header = response.getHeader("x-secret-homework-header");
         String header1 = response.jsonPath().getString("success");
 
-       System.out.println(header);
+        System.out.println(header);
         System.out.println(header1);
-       System.out.println(header.toString());
-    assertTrue(responseHeader.hasHeaderWithName("x-secret-homework-header"));
-       assertEquals( header1,"!");
+        System.out.println(header.toString());
+        assertTrue(responseHeader.hasHeaderWithName("x-secret-homework-header"));
+        assertEquals(header1, "!");
 
     }
 
@@ -76,8 +76,8 @@ public class Homework3 {
                 .andReturn();
         //      response.prettyPrint();
         JsonPath jsonPath = response.jsonPath();
- //       String userAgent = jsonPath.get("user_agent");
-   //     System.out.println("user-agent  " + userAgent);
+        //       String userAgent = jsonPath.get("user_agent");
+        //     System.out.println("user-agent  " + userAgent);
         String platform = jsonPath.get("platform");
         String browser = jsonPath.get("browser");
         String device = jsonPath.get("device");
@@ -98,6 +98,23 @@ public class Homework3 {
 
     }
 
+    @ParameterizedTest
+    @ValueSource(strings = {"", "John", "Leo"})
+    public void checkNameTest(String name){
+ Map<String,String> queryParams = new HashMap<>();
+ if(name.length() > 0){
+     queryParams.put("name",name);
+ }
+        JsonPath response = RestAssured
+                .given()
+                .queryParams(queryParams)
+                .get("https://playground.learnqa.ru/api/hello")
+                .jsonPath();
+ String answer = response.getString("answer");
+ String expectedName = (name.length()>0) ? name:"someone";
+ assertEquals("Hello, " + expectedName,answer,"____ unexpected Name");
+        System.out.println(answer);
 
+    }
 }
 
