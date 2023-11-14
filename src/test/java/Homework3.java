@@ -7,7 +7,7 @@ import io.restassured.response.Response;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
+import org.junit.jupiter.params.provider.ValueSource;;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -104,7 +104,7 @@ public class Homework3 {
  Map<String,String> queryParams = new HashMap<>();
  if(name.length() > 0){
      queryParams.put("name",name);
-      }
+      }else {throw new IllegalArgumentException("Enter the name");}
         JsonPath response = RestAssured
                 .given()
                 .queryParams(queryParams)
