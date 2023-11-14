@@ -104,7 +104,7 @@ public class Homework3 {
  Map<String,String> queryParams = new HashMap<>();
  if(name.length() > 0){
      queryParams.put("name",name);
- }
+      }
         JsonPath response = RestAssured
                 .given()
                 .queryParams(queryParams)
