@@ -15,14 +15,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class BeforeEachClass {
-
-    public class UserLoginCheck {
-        String cookie;
-        String header;
-        int userIdOnAuth;
-
-        @BeforeEach
-        public void successLogin() {
+    String cookie;
+    String header;
+    int userIdOnAuth;
+    @BeforeEach
+          public void successLogin() {
             Map<String, String> authData = new HashMap<>();
             authData.put("email", "vinkotov@example.com");
             authData.put("password", "1234");
@@ -76,4 +73,4 @@ public class BeforeEachClass {
 
     }
 
-}
+
