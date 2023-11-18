@@ -12,20 +12,25 @@ import org.junit.jupiter.params.provider.ValueSource;;
 import java.util.HashMap;
 import java.util.Map;
 
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class Homework3 {
     @ParameterizedTest
-    @ValueSource(strings = {"1", "12345", "12345678910123456", "vasyavasyavasya", "vasyavasyavasya1"})
+    @ValueSource(strings = {"1", "12345", "123456789101234","1234567891012345", "vasyavasyavasya", "vasyavasyavasya1"})
     public void shortPhraseTest(String givenString) {
         int length = givenString.length();
-        if (length <= 15) {
+       if (length <= 15) {
             givenString = "Name doesn't exist";
         }
         String answer = (length > 15) ? givenString : "Name doesn't exist";
-        System.out.println(answer);
+ //       System.out.println(answer);
         assertEquals(givenString, answer, "Name doesn't exist");
+      if (givenString.equals(answer)){
+          System.out.println(answer);
+
+      }
 
     }
 
@@ -47,13 +52,13 @@ public class Homework3 {
                 .andReturn();
         response.prettyPrint();
         Headers responseHeader = response.getHeaders();
-        System.out.println(responseHeader);
+ //       System.out.println(responseHeader);
         String header = response.getHeader("x-secret-homework-header");
         String header1 = response.jsonPath().getString("success");
 
         System.out.println(header);
         System.out.println(header1);
-        System.out.println(header.toString());
+   //     System.out.println(header.toString());
         assertTrue(responseHeader.hasHeaderWithName("x-secret-homework-header"));
         assertEquals(header1, "!");
 
@@ -99,20 +104,22 @@ public class Homework3 {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"", "John", "Leo"})
-    public void checkNameTest(String name){
- Map<String,String> queryParams = new HashMap<>();
- if(name.length() > 0){
-     queryParams.put("name",name);
-      }else {throw new IllegalArgumentException("Enter the name");}
+       @ValueSource(strings = {"", "John", "Leo"})
+    public void checkNameTest(String name) {
+        Map<String, String> queryParams = new HashMap<>();
+     //   if (name.length() > 0) {
+            queryParams.put("name", name);
+ //       } else {
+   //         throw new IllegalArgumentException("Enter the name");
+    //    }
         JsonPath response = RestAssured
                 .given()
                 .queryParams(queryParams)
                 .get("https://playground.learnqa.ru/api/hello")
                 .jsonPath();
- String answer = response.getString("answer");
- String expectedName = (name.length()>0) ? name:"someone";
- assertEquals("Hello, " + expectedName,answer,"____ unexpected Name");
+        String answer = response.getString("answer");
+        String expectedName = (name.length() > 0) ? name : "someone";
+        assertEquals("Hello, " + expectedName, answer, "____ unexpected Name");
         System.out.println(answer);
 
     }

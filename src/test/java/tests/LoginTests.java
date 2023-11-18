@@ -34,9 +34,11 @@ public class LoginTests extends BaseTest {
                 .given().body(authData)
                 .post("https://playground.learnqa.ru/api/user/login")
                 .andReturn();
-        this.cookie = responseAuth.getCookie("auth_sid");
-        this.header = responseAuth.getHeader("x-csrf-token");
-        this.authId = responseAuth.jsonPath().getInt("user_id");
+        this.cookie = this.getCookie(responseAuth,"auth_sid");
+
+        this.header = this.getHeader(responseAuth,"x-csrf-token");
+
+        this.authId = this.getIntFromJson(responseAuth,"user_id");
     }
 
 
@@ -50,8 +52,8 @@ public class LoginTests extends BaseTest {
                 .cookie("auth_sid", this.cookie)
                 .get("https://playground.learnqa.ru/api/user/auth")
                 .andReturn();
-        userConfirmId.prettyPrint();
-        System.out.println(userConfirmId.asString());
+       userConfirmId.prettyPrint();
+       System.out.println(userConfirmId.asString());
 
         Assertions.assertJsonByName(userConfirmId,"user_id",this.authId);
      /*   int authIdOnCheck = userConfirmId.getInt("user_id");
@@ -69,8 +71,8 @@ public class LoginTests extends BaseTest {
                 .setBaseUri("https://playground.learnqa.ru/api/user/auth")
                 .build();
 
-        RequestSpecification spec1 = RestAssured.given();
-        spec1.baseUri("https://playground.learnqa.ru/api/user/auth");
+     //   RequestSpecification spec1 = RestAssured.given();
+      //  spec1.baseUri("https://playground.learnqa.ru/api/user/auth");
         // define string value
         if (value.equals("cookie")) {
             spec.cookie("auth_sid", this.cookie);
@@ -80,12 +82,12 @@ public class LoginTests extends BaseTest {
             throw new IllegalArgumentException("Value is  " + value);
         }
 
-        Response checkUserAuth = spec1.get().andReturn();
+        Response checkUserAuth = spec.get().andReturn();
         Assertions.assertJsonByName(checkUserAuth,"user_id",0);
        // assertEquals(0, checkUserAuth.getInt("user_id"), "user_id should be  0");
         System.out.println(checkUserAuth.asString());
         System.out.println(checkUserAuth.statusCode());
-        System.out.println("user with value  '" + value + "'doesn't exist");
+        System.out.println("-----user with value  " + value + "   doesn't exist-----");
     }
 
 }
