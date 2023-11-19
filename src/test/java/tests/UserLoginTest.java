@@ -16,6 +16,27 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class UserLoginTest extends BaseTest {
+    @Test//made by me
+    public void loginAlreadyRegisteredUser(){
+        String email = "vinkotov@example.com";
+        Map<String, String> userDate = new HashMap<>();
+        userDate.put("email",email);
+        userDate.put("password","123");
+        userDate.put("username", "learnqa");
+        userDate.put("firstName", "learnqa");
+        userDate.put("lastName", "learnqa");
+        Response responseAlreadyLogin = RestAssured
+                .given()
+                .body(userDate)
+                .post("https://playground.learnqa.ru/api/user/")
+                .andReturn();
+
+        System.out.println(responseAlreadyLogin.asString());// == responseAlreadyLogin.print();
+        System.out.println(responseAlreadyLogin.getStatusCode());//==System.out.println(responseAlreadyLogin.statusCode());
+        Assertions.assertResponseTextEquals(responseAlreadyLogin,"Users with email '" + email + "' already exists");
+        Assertions.assertResponseCodeEquals(responseAlreadyLogin,400);
+
+    }
 
     @Test
     public void loginExistingEmailUser() {
@@ -57,6 +78,7 @@ public class UserLoginTest extends BaseTest {
                 .body(userDate)
                 .post("https://playground.learnqa.ru/api/user/")
                 .andReturn();
+     //   System.out.println(responseCreateAuth.print());
         System.out.println(responseCreateAuth.asString());
         System.out.println(responseCreateAuth.statusCode());
         //    Assertions.assertResponseTextEquals(responseCreateAuth,"Users with email '" + email + "' already exists");

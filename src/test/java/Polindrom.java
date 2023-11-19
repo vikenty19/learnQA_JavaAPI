@@ -10,7 +10,8 @@ public class Polindrom {
     @Test
     public void getWordAsChar() {
         String string = "abc";
-        char[] chars = string.toCharArray();
+      char[] chars = string.toCharArray();
+
         for (char char1 : chars) {
             System.out.print(char1 + " ");
         }

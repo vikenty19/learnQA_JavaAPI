@@ -62,7 +62,7 @@ public class FindPassword {
                         .andReturn();
 
                Boolean password = responseForPassword
-                        .print()
+                       .print()
                         .equals("You are NOT authorized");
 
                 System.out.println(password);

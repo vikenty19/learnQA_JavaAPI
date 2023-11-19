@@ -18,8 +18,8 @@ public class Assertions {
         String value = response.jsonPath().getString(name);
         assertEquals(expectedValue,value,"Json value doesn't match to expected");
     }
-  public static void  assertResponseTextEquals(Response response,String expectedAnswer){
-      assertEquals(expectedAnswer,response.asString(),"Response IS NOT expected");
+  public static void  assertResponseTextEquals(Response Response,String expectedAnswer){
+      assertEquals(expectedAnswer,Response.asString(),"Response IS NOT expected");
   }
     public static void  assertResponseCodeEquals(Response response,int expectedAnswer) {
         assertEquals(expectedAnswer,response.statusCode());
