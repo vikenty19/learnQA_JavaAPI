@@ -2,6 +2,7 @@ package lib;
 
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class DataGenerator {
@@ -25,6 +26,7 @@ public class DataGenerator {
         Map<String, String> defaultValues = DataGenerator.getRegistrationData();
         Map<String, String> userData = new HashMap<>();
         String[] keys = {"email", "password", "username", "firstName", "lastName"};
+
         for (String key : keys) {
             if (notDefaultValues.containsKey(key)) {
                 userData.put(key, notDefaultValues.get(key));

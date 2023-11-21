@@ -12,6 +12,7 @@ public class Assertions {
       response.then().body("$",hasKey(name));
       int value = response.jsonPath().getInt(name);
       assertEquals(expectedValue,value,"Json value doesn't match to expected");
+
   }
     public static void assertJsonByName(Response response,String name,String expectedValue){
         response.then().body("$",hasKey(name));
@@ -35,6 +36,11 @@ public class Assertions {
     public static void assertResponseHasNotField(Response response, String expectedFieldName){
         response.then().assertThat().body("$", not(hasKey(expectedFieldName)));
     }
+ public static void assertJsonHasKey(Response Response,String expectedFieldName){
+      Response.then().assertThat().body("$",hasKey(expectedFieldName));
 
-
+ }
+public static void assertJsonHasNotKey(Response response,String expectedFieldName){
+      response.then().assertThat().body("$",not(hasKey(expectedFieldName)));
+}
 }

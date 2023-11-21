@@ -41,7 +41,7 @@ public class UserLoginTest extends BaseTest {
     @Test
     public void loginExistingEmailUser() {
 
-        String email = "vinkotov@example.com";
+       String email = "vinkotov@example.com";
         Map<String, String> userDate = new HashMap<>();
         userDate.put("email", email);
         userDate = DataGenerator.getRegistrationData(userDate);
