@@ -16,10 +16,10 @@ public void getUserDataNotAuth(){
             .get("https://playground.learnqa.ru/api/user/2")
             .andReturn();
     System.out.println(responseGetUserData.asString());
-    Assertions.assertJsonHasKey(responseGetUserData,"username");
-    Assertions.assertJsonHasNotKey(responseGetUserData,"email");
-    Assertions.assertJsonHasNotKey(responseGetUserData,"firstname");
-    Assertions.assertJsonHasNotKey(responseGetUserData,"lastname");
+    Assertions.assertJsonHasKey1(responseGetUserData,"username");
+    Assertions.assertJsonHasNotKey1(responseGetUserData,"email");
+    Assertions.assertJsonHasNotKey1(responseGetUserData,"firstname");
+    Assertions.assertJsonHasNotKey1(responseGetUserData,"lastname");
 }
     @Test
     public void getUserAuthDataAuth(){
