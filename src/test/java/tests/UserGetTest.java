@@ -26,12 +26,21 @@ public void getUserDataNotAuth(){
      Map<String,String> userData = new HashMap<>();
      userData.put("email", "vinkotov@example.com");
         userData.put("password", "1234");
-        Response responseWithAuthData = RestAssured
+        Response responseGetAuthData = RestAssured
                 .given()
                 .body(userData)
+                .post("https://playground.learnqa.ru/api/user/login")
+                .andReturn();
+        String header = getHeader(responseGetAuthData,"x-csrf-token");
+        String cookie = this.getCookie(responseGetAuthData,"auth_sid");
+        Response responseWithAuthData = RestAssured
+                .given()
+                .header("x-csrf-token",header)
+                .cookie("auth_sid",cookie)
                 .get("https://playground.learnqa.ru/api/user/2")
                 .andReturn();
-      //  String header = getHeader()
+        String[] checkingData = {"username","firstName","lastName","email"};
+        Assertions.assertResponseHasKeys(responseWithAuthData,checkingData);
 
 
     }

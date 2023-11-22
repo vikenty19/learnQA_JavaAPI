@@ -44,13 +44,7 @@ public class UserEditTest extends BaseTest {
         String newUserName = "NEW NAME";
         Map<String, String> newData = new HashMap<>();
         newData.put("firstName", newUserName);
-        Response responseEditUserData = RestAssured
-                .given()
-                .header("x-csrf-token", responseLoginUser.getHeader("x-csrf-token"))
-                .cookie("auth_sid", this.getCookie(responseLoginUser, "auth_sid"))
-                .body(newData)
-                .put("https://playground.learnqa.ru/api/user/" + userId)
-                .andReturn();
+
 
         // Get new userData
 

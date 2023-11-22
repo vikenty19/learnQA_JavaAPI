@@ -47,6 +47,7 @@ public static void assertJsonHasNotKey1(Response response, String unexpectedFiel
 public static void assertResponseHasKeys(Response response,String[] expectedFieldNames){
       for(String expectedFieldName : expectedFieldNames){
          Assertions.assertJsonHasKey1(response,expectedFieldName);
+          System.out.println(expectedFieldName);
       }
 
 }
