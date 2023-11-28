@@ -115,25 +115,26 @@ public class UserLoginTest extends BaseTest {
         Map<String, String> loginData = new HashMap<>();
           loginData.put(field,emptyField);
           loginData= DataGenerator.getRegistrationData(loginData);
+          // CREATE USER WITH EMPTY FIELD
         Response responseEmptyFieldUser = RestAssured
                 .given()
                 .body(loginData)
                 .post("https://playground.learnqa.ru/api/user/")
                 .andReturn();
-       Response responseCreateAuth = RestAssured
-                .given()
-                .body(loginData)
-                .post("https://playground.learnqa.ru/api/user/")
+        //CHECK REGISTRATION
+      Response responseCreateAuth = RestAssured
+            //    .given()
+              //  .body(loginData)
+                .get("https://playground.learnqa.ru/api/user/auth")
                 .andReturn();
-        String cookie= responseCreateAuth.getCookie("id");
-   //     System.out.println(cookie);
+        System.out.println(responseCreateAuth.asString());
+        int userId = responseCreateAuth.jsonPath().getInt("user_id");
+        System.out.println(responseEmptyFieldUser.asString());
+       System.out.println(responseEmptyFieldUser.statusCode());
 
-  //      System.out.println(responseEmptyFieldUser.asString());
-  //      System.out.println(responseEmptyFieldUser.statusCode());
-
-        Assertions.assertResponseTextEquals(responseEmptyFieldUser,"The value of '"+field+"' field is too short");
+        Assertions.assertResponseTextEquals(responseEmptyFieldUser,"The value of '"+field+"' field is empty");
         Assertions.assertResponseCodeEquals(responseEmptyFieldUser,400);
-        assertEquals(null,cookie);
+       assertEquals(0,userId);
         }
 
     }

@@ -25,8 +25,8 @@ public class UserEditTest extends BaseTest {
                 .body(userData)
                 .post("https://playground.learnqa.ru/api/user/")
                 .jsonPath();
-        int userId = responseCreateAuth.getInt("id");
-   //  responseCreateAuth.prettyPrint();
+   int userId = responseCreateAuth.getInt("id");
+   //     System.out.println(responseCreateAuth.getInt("id"));
 
         //Login user
 
@@ -38,7 +38,7 @@ public class UserEditTest extends BaseTest {
                 .body(authData)
                 .post("https://playground.learnqa.ru/api/user/login")
                 .andReturn();
-        System.out.println(responseLoginUser.asString());
+    //    System.out.println(responseLoginUser.asString());
         // Edit User
 
         String newUserName = "NEW NAME";
