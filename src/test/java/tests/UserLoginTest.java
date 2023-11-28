@@ -110,8 +110,9 @@ public class UserLoginTest extends BaseTest {
     @ParameterizedTest
     @ValueSource(strings = {"email", "password", "username", "firstName", "lastName"})
 
-    public void loginWithOneEmptyField(String field) {
-        String emptyField = "";
+    public void authWithOneEmptyField(String field) {
+        String emptyField = null;
+        System.out.println(emptyField);
         Map<String, String> loginData = new HashMap<>();
           loginData.put(field,emptyField);
           loginData= DataGenerator.getRegistrationData(loginData);
@@ -132,7 +133,7 @@ public class UserLoginTest extends BaseTest {
         System.out.println(responseEmptyFieldUser.asString());
        System.out.println(responseEmptyFieldUser.statusCode());
 
-        Assertions.assertResponseTextEquals(responseEmptyFieldUser,"The value of '"+field+"' field is empty");
+        Assertions.assertResponseTextEquals(responseEmptyFieldUser,"The following required params are missed: "+field);
         Assertions.assertResponseCodeEquals(responseEmptyFieldUser,400);
        assertEquals(0,userId);
         }
