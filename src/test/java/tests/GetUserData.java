@@ -77,9 +77,9 @@ public class GetUserData extends BaseTest {
                     .get("https://playground.learnqa.ru/api/user/" + id)
                     .andReturn();
             System.out.println(responseGetAnotherUserData.asString());
-            String answer = responseGetAnotherUserData.getCookie("id");
-            System.out.println(answer);
-
+     //      int answer = responseGetAnotherUserData.jsonPath().getInt("id");
+      //      System.out.println(answer);
+Assertions.assertJsonByName(responseGetAnotherUserData,"id",id);
             //   String[] expectedFields = {"username", "email", "firstName", "lastName"};
             // Assertions.assertResponseHasField(responseGetAnotherUserData,"username");
         }
