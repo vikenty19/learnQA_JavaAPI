@@ -34,7 +34,7 @@ public class LoginTests extends BaseTest {
                 .given().body(authData)
                 .post("https://playground.learnqa.ru/api/user/login")
                 .andReturn();
-        this.cookie = this.getCookie(responseAuth,"auth_sid");
+        this.cookie = getCookie(responseAuth,"auth_sid");
 
         this.header = this.getHeader(responseAuth,"x-csrf-token");
 
@@ -52,42 +52,43 @@ public class LoginTests extends BaseTest {
                 .cookie("auth_sid", this.cookie)
                 .get("https://playground.learnqa.ru/api/user/auth")
                 .andReturn();
-       userConfirmId.prettyPrint();
-       System.out.println(userConfirmId.asString());
+       userConfirmId.prettyPrint();// System.out.println(userConfirmId.asString()); the same result
+
 
         Assertions.assertJsonByName(userConfirmId,"user_id",this.authId);
      /*   int authIdOnCheck = userConfirmId.getInt("user_id");
-        assertTrue(authIdOnCheck > 0,"unexpected user id");
-        Assert.assertEquals(userConfirmId.getInt("user_id"), authId);*/
+        assertTrue(authIdOnCheck > 0,"unexpected user id");*/
+       assertEquals(userConfirmId.jsonPath().getInt("user_id"), this.authId);
     }
 
     @ParameterizedTest
     @ValueSource(strings = {"cookie", "headers"})
-    public void negativeLoginTest(String value) {
+    public void negativeLoginTest(String conditions) {
 
            // two ways to define variable spec
 
-        spec = new RequestSpecBuilder()
-                .setBaseUri("https://playground.learnqa.ru/api/user/auth")
-                .build();
+    //    spec = new RequestSpecBuilder()
+     //           .setBaseUri("https://playground.learnqa.ru/api/user/auth")
+     //           .build();
 
-     //   RequestSpecification spec1 = RestAssured.given();
-      //  spec1.baseUri("https://playground.learnqa.ru/api/user/auth");
+        RequestSpecification spec = RestAssured.given();
+        spec.baseUri("https://playground.learnqa.ru/api/user/auth");
         // define string value
-        if (value.equals("cookie")) {
-            spec.cookie("auth_sid", this.cookie);
-        } else if (value.equals("headers")) {
+
+        if (conditions.equals("cookie")) {
+            spec.cookie("auth_sid",this.cookie);
+        } else if (conditions.equals("headers")) {
             spec.header("x-csrf-token", this.header);
         } else {
-            throw new IllegalArgumentException("Value is  " + value);
+            throw new IllegalArgumentException("Value is  " + conditions);
         }
 
-        Response checkUserAuth = spec.get().andReturn();
-        Assertions.assertJsonByName(checkUserAuth,"user_id",0);
-       // assertEquals(0, checkUserAuth.getInt("user_id"), "user_id should be  0");
-        System.out.println(checkUserAuth.asString());
-        System.out.println(checkUserAuth.statusCode());
-        System.out.println("-----user with value  " + value + "   doesn't exist-----");
+        JsonPath checkUserAuth = spec.get().jsonPath();
+
+        assertEquals(0, checkUserAuth.getInt("user_id"), "user_id should be  0");
+        System.out.println(checkUserAuth.prettyPrint());
+
+        System.out.println("-----user with value  '" + conditions + "'   doesn't exist-----");
     }
 
 }
