@@ -3,6 +3,8 @@ import io.restassured.http.Cookies;
 import io.restassured.http.Headers;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
+import lib.Assertions;
+import lib.BaseTest;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collection;
@@ -10,17 +12,21 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-public class HomeworkTest1 {
+import static org.hamcrest.Matchers.hasKey;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+public class HomeworkTest1 extends BaseTest {
     @Test
     public void testJsonPath() {
-
+        String expectedMessage = "This is the first message";
 
         JsonPath response = RestAssured
                 .get("https://playground.learnqa.ru/api/get_json_homework")
                 .jsonPath();
         response.prettyPrint();
-        System.out.println(response.getString("messages[0].timestamp"));
-       // System.out.println(response.get("messages.get(messages").get(1).get("message"))");
+        System.out.println(response.getString("messages[1].message"));
+
+        // System.out.println(response.get("messages.get(messages").get(1).get("message"))");
     }                                  //        messages.get("messages").get(1).get("message");
 
     @Test
@@ -31,7 +37,7 @@ public class HomeworkTest1 {
 
         Response response = RestAssured
                 .given()
-         //       .headers(headers) // its doesn't have any effect on a result
+                //       .headers(headers) // its doesn't have any effect on a result
                 .redirects()
 
                 .follow(false)
@@ -40,8 +46,8 @@ public class HomeworkTest1 {
                 .andReturn();
         int statusCode = response.getStatusCode();
         System.out.println(statusCode);
-      //    response.prettyPrint();
-      Headers responseHeaders = response.getHeaders();
+        //    response.prettyPrint();
+        Headers responseHeaders = response.getHeaders();
         System.out.println(responseHeaders);
 
         String locationHeader = response.getHeader("location");
@@ -65,23 +71,36 @@ public class HomeworkTest1 {
                     .get(locationHeader)
                     .andReturn();
             statusCode = response.getStatusCode();
-    //        System.out.println(statusCode);
+            //        System.out.println(statusCode);
 
-            if(statusCode == 301){
+            if (statusCode == 301) {
                 count++;
 
             }
 
             //  response.prettyPrint();
             Headers responseHeaders = response.getHeaders();
-       //     System.out.println(responseHeaders);
+            //     System.out.println(responseHeaders);
 
             locationHeader = response.getHeader("location");
-    //        System.out.println(locationHeader);
+            //        System.out.println(locationHeader);
         }
         while (statusCode != 200);
-        System.out.println("Finally,statusCode is   "+ statusCode);
-        System.out.println("NUMBER OF REDIRECTS IS  " + count );
+        System.out.println("Finally,statusCode is   " + statusCode);
+        System.out.println("NUMBER OF REDIRECTS IS  " + count);
     }
 
+    @Test
+    public void parseJsonPath() {
+        String expectedMessage = "messages[1].message";
+
+        Response response = RestAssured
+                .get("https://playground.learnqa.ru/api/get_json_homework")
+                .andReturn();
+        response.print();
+         System.out.println(response.jsonPath().getString("messages[1].message"));
+        assertEquals("And this is a second message",response.jsonPath().getString("messages[1].message"));
+        //  Assertions.assertJsonByName(response,"messages[1].message",expectedMessage);
+       // response.then().assertThat().body("$",hasKey(expectedMessage));
+    }
 }
