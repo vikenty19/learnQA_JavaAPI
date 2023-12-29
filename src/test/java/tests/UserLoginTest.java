@@ -45,11 +45,7 @@ public class UserLoginTest extends BaseTest {
         Map<String, String> userDate = new HashMap<>();
         userDate.put("email", email);
         userDate = DataGenerator.getRegistrationData(userDate);
-  /*      userDate.put("password", "123");
-        userDate.put("username", "learnqa");
-        userDate.put("firstName", "learnqa");
-        userDate.put("lastName", "learnqa");*/
-        System.out.println(userDate);
+          System.out.println(userDate);
         Response responseCreateAuth = RestAssured
                 .given()
                 .body(userDate)
@@ -137,7 +133,11 @@ public class UserLoginTest extends BaseTest {
         Assertions.assertResponseCodeEquals(responseEmptyFieldUser,400);
        assertEquals(0,userId);
         }
+       @Test
+    public void loginWithIncorrectEmail(){
 
+
+       }
     }
 
 

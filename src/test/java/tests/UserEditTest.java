@@ -6,6 +6,7 @@ import io.restassured.response.Response;
 import lib.Assertions;
 import lib.BaseTest;
 import lib.DataGenerator;
+import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
@@ -69,8 +70,9 @@ public class UserEditTest extends BaseTest {
 
     @Test
     public void changeUserDataWithoutAuth() {
-        Map<String, String> userData = new HashMap<>();
-        userData = DataGenerator.getRegistrationData();
+
+        //Create user
+        Map<String, String> userData = DataGenerator.getRegistrationData();
         JsonPath responseCreateAuth = RestAssured
                 .given()
                 .body(userData)
@@ -81,6 +83,7 @@ public class UserEditTest extends BaseTest {
         System.out.println(userData);
         System.out.println(userId);
 
+          // edit name without auth
         String newLastName = "NewNameAgain";
         Map<String, String> changeUserData = new HashMap<>();
         changeUserData.put("lastName", newLastName);
@@ -90,13 +93,18 @@ public class UserEditTest extends BaseTest {
                 .put("https://playground.learnqa.ru/api/user/" + userId)
                 .andReturn();
         System.out.println(responseEditUser.asString());
+
+
         Response responseChangedUserData = RestAssured
                 .given()
                 .when()
                 .get("https://playground.learnqa.ru/api/user/" + userId)
                 .andReturn();
         System.out.println(responseChangedUserData.asString());
+        String lastName = responseChangedUserData.jsonPath().getString("lastName");
+        System.out.println(lastName);
         Assertions.assertResponseHasNotField(responseChangedUserData, userLastName);
+        Assert.assertNotEquals(lastName,newLastName);
     }
 
     @Test
