@@ -1,5 +1,6 @@
-import org.apache.logging.log4j.core.util.JsonUtils;
-import org.junit.Assert;
+//import org.apache.logging.log4j.core.util.JsonUtils;
+//import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -53,7 +54,7 @@ String s3 ="My example is example is is";
         }
 
 
-        Assert.assertTrue(myString.equalsIgnoreCase(myStringReverse));
+      Assertions.assertTrue(myString.equalsIgnoreCase(myStringReverse));
         System.out.println(myStringReverse + "  " + myString);
         if (myString.equalsIgnoreCase(myStringReverse)) {
             return true;
