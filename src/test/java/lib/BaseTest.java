@@ -3,7 +3,6 @@ package lib;
 
 import io.restassured.http.Headers;
 import io.restassured.response.Response;
-import org.junit.Before;
 
 import java.util.Map;
 

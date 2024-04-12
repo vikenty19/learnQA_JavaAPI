@@ -2,14 +2,11 @@ import io.restassured.RestAssured;
 import io.restassured.http.Headers;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
-
-import org.junit.Assert;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.util.*;
-
-import org.junit.jupiter.api.Assertions;
+import java.util.HashMap;
+import java.util.Map;
 
 public class HomeworkToken {
 
