@@ -30,7 +30,9 @@ public class HomeworkToken {
                 .queryParams(headers)
                 .put("https://playground.learnqa.ru/ajax/api/longtime_job")
                 .jsonPath();
-        newresponse.prettyPrint();
+        String status = newresponse.getString("status");
+        System.out.println("Status  :\n" + status);
+     //   newresponse.prettyPrint();
 
         //  waiting for task completion
 

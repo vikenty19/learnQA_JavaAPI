@@ -29,28 +29,22 @@ public class FindPassword {
                 "freedom","aa123456","qazwsx",	"ninja","azerty","loveme","whatever","donald",
                  "mustang","trustno1","batman","zaq1zaq1","qazwsx","password1","Football","000000",
                 "trustno1",	"starwars",	"123qwe"};
-        Arrays.sort(findPassword);
-       System.out.println(Arrays.toString(findPassword));
+ //       Arrays.sort(findPassword);
+   //    System.out.println(Arrays.toString(findPassword));
+
+        // searching for password in the loop
+
        for(int i=0; i<findPassword.length;i++){
         date.put("password",findPassword[i]);
-
-
-
                 Response getResponse = RestAssured
                         .given()
                         .body(date)
                         .when()
                         .post(" https://playground.learnqa.ru/ajax/api/get_secret_password_homework")
                         .andReturn();
-                getResponse.prettyPrint();
-
+       //         getResponse.prettyPrint();
+         //put auth cookie and [i] password
                 String authCookie = getResponse.getCookie("auth_cookie");
-
-                System.out.println(authCookie);
-                int statusCode = getResponse.getStatusCode();
-                System.out.println(statusCode);
-
-
                 Map<String, String> cookies = new HashMap<>();
                 cookies.put("auth_cookie", authCookie);
                 Response responseForPassword = RestAssured
@@ -60,15 +54,14 @@ public class FindPassword {
                         .when()
                         .post("https://playground.learnqa.ru/ajax/api/check_auth_cookie")
                         .andReturn();
+      //  responseForPassword.print();
+        String realPassword = responseForPassword.asString();
 
-               Boolean password = responseForPassword
-                        .print()
-                        .equals("You are NOT authorized");
+           if(realPassword.equals("You are authorized")){
+               System.out.println(date);
+               break;
+           }
 
-                System.out.println(password);
-
-            System.out.println(date);
-            if (password == false) break;
         }
     }
 
