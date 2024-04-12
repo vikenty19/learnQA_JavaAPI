@@ -8,24 +8,39 @@ import java.util.Map;
 
 public class HelloWorldTest {
     @Test
-    public void testJsonPath(){
 
-        HashMap<String,String> params = new HashMap<>();
-        params.put("name","Santa");
+    public void testJsonPath() {
+
+        HashMap<String, String> params = new HashMap<>();
+        params.put("name", "Santa");
 
         JsonPath response = RestAssured
                 .given()
                 .queryParams(params)
                 .get("https://playground.learnqa.ru/api/hello")
                 .jsonPath();
-                 response.prettyPrint();
+        response.prettyPrint();
         String answer = response.get("answer");
 
-        if (answer == null){
+        if (answer == null) {
             System.out.println("Key 'answer' is absent");
         } else {
             System.out.println(answer);
         }
+    }
+@Test
+    public void testRestAssured(){
+
+       HashMap<String,String> params = new HashMap<>();
+      // params.put("name","Santa");
+       params.put("name","NY");
+        Response response = RestAssured
+                .given()
+                .queryParams(params)
+                        .get("https://playground.learnqa.ru/api/hello")
+                .andReturn();
+        response.prettyPrint();
+
 
     }
     @Test
@@ -42,6 +57,7 @@ public class HelloWorldTest {
                 .get("https://playground.learnqa.ru/api/get_json")
                 .jsonPath();
         response.prettyPrint();
+
 
     }
 
