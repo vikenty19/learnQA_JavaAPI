@@ -49,7 +49,7 @@ public class HomeworkTest1 {
         Map<String, String> headers = new HashMap<>();
         headers.put("myHeader1", "myValue1");
         headers.put("myHeader2", "myValue2");
-        String locationHeader = "https://playground.learnqa.ru/api/long_redirect";
+        String url = "https://playground.learnqa.ru/api/long_redirect";
         int statusCode;
         int count = 0;
         do {
@@ -58,26 +58,23 @@ public class HomeworkTest1 {
                     .redirects()
                     .follow(false)
                     .when()
-                    .get(locationHeader)
+                    .get(url)
                     .andReturn();
             statusCode = response.getStatusCode();
-    //        System.out.println(statusCode);
+            //        System.out.println(statusCode);
 
-            if(statusCode == 301){
+            if (statusCode == 301) {
                 count++;
-
             }
 
-            //  response.prettyPrint();
-            Headers responseHeaders = response.getHeaders();
-       //     System.out.println(responseHeaders);
+//             присваевываем новый  url
 
-            locationHeader = response.getHeader("location");
-    //        System.out.println(locationHeader);
+            url = response.getHeader("location");
+            System.out.println(url);
         }
         while (statusCode != 200);
-        System.out.println("Finally,statusCode is   "+ statusCode);
-        System.out.println("NUMBER OF REDIRECTS IS  " + count );
+        System.out.println("Finally,statusCode is   " + statusCode);
+        System.out.println("NUMBER OF REDIRECTS IS  " + count);
     }
 
 }
