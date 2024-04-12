@@ -33,6 +33,14 @@ public class HelloWorldTest {
         Response response = RestAssured
                 .get("https://playground.learnqa.ru/api/get_text")
                 .andReturn();
+        response.print();
+
+    }
+    @Test
+    public void getTextJson(){
+       JsonPath response = RestAssured
+                .get("https://playground.learnqa.ru/api/get_json")
+                .jsonPath();
         response.prettyPrint();
 
     }
