@@ -6,6 +6,8 @@ import io.restassured.response.Response;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 public class HelloWorldTest {
     @Test
 
@@ -60,5 +62,12 @@ public class HelloWorldTest {
 
 
     }
+@Test
+    public void testWithAssertions(){
 
+        Response response = RestAssured
+                .get("https://playground.learnqa.ru/api/map")
+                .andReturn();
+        assertEquals(200,response.statusCode(), "Unexpected status code");
+}
 }
