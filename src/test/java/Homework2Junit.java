@@ -13,4 +13,14 @@ public class Homework2Junit {
                 .jsonPath();
         assertEquals("Hello, someone",response.getString("answer"),"Unexpected result");
     }
+    @Test
+    public void helloWorldWithName(){
+        String name = "Vasya";
+        JsonPath response = RestAssured
+                .given()
+                .queryParam("name",name)
+                .get("https://playground.learnqa.ru/api/hello")
+                .jsonPath();
+        assertEquals("Hello, " + name,response.getString("answer"),"Unexpected result");
+    }
 }
