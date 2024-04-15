@@ -1,10 +1,10 @@
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
-import io.restassured.http.Header;
 import io.restassured.http.Headers;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -18,6 +18,25 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class UserAuthTest {
+    String cookie;
+    String header;
+    int userIdForCheck;
+
+    @BeforeEach
+    public void loginUser(){
+        Map<String,String> userData = new HashMap<>();
+        userData.put("email","vinkotov@example.com");
+        userData.put("password","1234");
+        Response response = given()
+                .body(userData)
+                .post("https://playground.learnqa.ru/api/user/login")
+                .andReturn();
+        this.cookie = response.getCookie("auth_sid");
+        this.header = response.getHeader("x-csrf-token");
+        this.userIdForCheck = response.jsonPath().getInt("user_id");
+
+    }
+
     @Test
     public void registerUserAndCheck(){
         Map<String,String> userData = new HashMap<>();
@@ -39,9 +58,6 @@ public class UserAuthTest {
         assertTrue(headers.hasHeaderWithName("x-csrf-token"),"Response doesn't have header to auth");
         assertTrue((userId>0),"User id must be greater then zero");
 
-//        Map<String,Object>checkAuth = new HashMap<>();
-//        checkAuth.put("user_id",userId);
-//        checkAuth.put("x-csrf-token",response.getHeader("x-csrf-token"));
          JsonPath responseCheckAuth = given()
                  .header("x-csrf-token",response.getHeader("x-csrf-token"))
                  .cookie("auth_sid",response.getCookie("auth_sid"))
@@ -69,7 +85,8 @@ public class UserAuthTest {
       /*  RequestSpecification requestSpecification = new RequestSpecBuilder()
                 .setBaseUri("https://playground.learnqa.ru/api/user/auth")
                 .build();*/
-        //spe for the second variant
+
+        //spec for the second variant
         RequestSpecification requestSpecification = RestAssured
                 .given().baseUri("https://playground.learnqa.ru/api/user/auth");
 
@@ -92,8 +109,8 @@ public class UserAuthTest {
 
         // second variant
 
-        JsonPath responseFoCheck = requestSpecification.get().jsonPath();
-        responseFoCheck.prettyPrint();
-        assertEquals(0,responseFoCheck.getInt("user_id"));
+        JsonPath userIdForCheck = requestSpecification.get().jsonPath();
+        userIdForCheck.prettyPrint();
+        assertEquals(0,userIdForCheck.getInt("user_id"));
     }
 }
