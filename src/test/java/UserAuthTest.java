@@ -1,13 +1,20 @@
 import io.restassured.RestAssured;
+import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.http.Header;
 import io.restassured.http.Headers;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import static io.restassured.RestAssured.given;
+import static io.restassured.RestAssured.when;
+import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class UserAuthTest {
@@ -16,8 +23,7 @@ public class UserAuthTest {
         Map<String,String> userData = new HashMap<>();
         userData.put("email","vinkotov@example.com");
         userData.put("password","1234");
-        Response response = RestAssured
-                .given()
+        Response response = given()
                 .body(userData)
                 .post("https://playground.learnqa.ru/api/user/login")
                 .andReturn();
@@ -36,8 +42,7 @@ public class UserAuthTest {
 //        Map<String,Object>checkAuth = new HashMap<>();
 //        checkAuth.put("user_id",userId);
 //        checkAuth.put("x-csrf-token",response.getHeader("x-csrf-token"));
-         JsonPath responseCheckAuth = RestAssured
-                .given()
+         JsonPath responseCheckAuth = given()
                  .header("x-csrf-token",response.getHeader("x-csrf-token"))
                  .cookie("auth_sid",response.getCookie("auth_sid"))
                  .get("https://playground.learnqa.ru/api/user/auth")
@@ -46,7 +51,49 @@ public class UserAuthTest {
          assertTrue(userIdForCheck > 0,"user id must be greater than 0"+ userIdForCheck);
          assertEquals(userId,userIdForCheck,"User id not equals to expected"+ userIdForCheck);
 
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"cookie","header"})
+    public void negativeAuthTests(String condition){
+        Map<String,String >userData = new HashMap<>();
+        userData.put("email","vinkotov@example.com");
+        userData.put("password","1234");
+        Response response = given()
+                .body(userData)
+                .post("https://playground.learnqa.ru/api/user/login")
+                .andReturn();
+        Map<String,String>cookies = response.getCookies();
+       Headers headers = response.getHeaders();
+       // spec for the first variant
+      /*  RequestSpecification requestSpecification = new RequestSpecBuilder()
+                .setBaseUri("https://playground.learnqa.ru/api/user/auth")
+                .build();*/
+        //spe for the second variant
+        RequestSpecification requestSpecification = RestAssured
+                .given().baseUri("https://playground.learnqa.ru/api/user/auth");
+
+        if(condition.equals("cookie")){
+            requestSpecification.cookie("auth_sid",cookies.get("auth_sid"));
+        }
+        else if(condition.equals("header")){
+            requestSpecification.header("x-csrf-token",headers.get("x-csrf-token"));
+
+        }
+        else {
+            throw new IllegalArgumentException("Unknown condition value ----> " + condition);
+        }
+
+        //First variant
+      /*     given().spec(requestSpecification).log().uri()
+                   .when().get()
+                   .then().body("user_id",equalTo(0)).log().body();*/
 
 
+        // second variant
+
+        JsonPath responseFoCheck = requestSpecification.get().jsonPath();
+        responseFoCheck.prettyPrint();
+        assertEquals(0,responseFoCheck.getInt("user_id"));
     }
 }
