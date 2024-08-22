@@ -12,6 +12,9 @@ public class BaseTestCase {
    protected String[]fields = {"firstName","lastName","email"};
     protected String[]fieldsForAuth= {"username","firstName","lastName","email"};
     protected static String[]keys = {"email","password","username","firstName","lastName"};
+    protected String urlAuth = "https://playground.learnqa.ru/api/user/auth";
+    protected String urlLogin = "https://playground.learnqa.ru/api/user/login";
+
     protected String getHeader(Response Response,String name){
         Headers headers = Response.getHeaders();
         assertTrue(headers.hasHeaderWithName(name),"Response doesn't have header with name  "+ name);

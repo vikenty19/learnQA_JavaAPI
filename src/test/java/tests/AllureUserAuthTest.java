@@ -32,7 +32,7 @@ public class AllureUserAuthTest extends BaseTestCase {
         authData.put("email","vinkotov@example.com");
         authData.put("password","1234");
         Response responseGetAuth = apiCoreRequest
-                .makePostRequest("https://playground.learnqa.ru/api/user/login",authData);
+                .makePostRequest(urlLogin,authData);
         this.cookie =  this.getCookie(responseGetAuth,"auth_sid");
         this.header =  this.getHeader(responseGetAuth,"x-csrf-token");
         this.user_id = this.getIntFromResponse(responseGetAuth,"user_id");
@@ -47,7 +47,7 @@ public class AllureUserAuthTest extends BaseTestCase {
     public void testAuthUser(){
 
         Response responseCheckAuth = apiCoreRequest
-                .makeGetRequest("https://playground.learnqa.ru/api/user/auth",
+                .makeGetRequest(urlAuth,
                         this.header,
                         this.cookie);
        Assertions.assertJsonByName(responseCheckAuth,"user_id",this.user_id);
@@ -58,19 +58,19 @@ public class AllureUserAuthTest extends BaseTestCase {
     @ParameterizedTest
     @ValueSource(strings = {"cookie","header"})
     public void loginWithoutCookieOrHeader(String condition){
-        
+
         RequestSpecification spec = RestAssured
                 .given()
-                .baseUri("https://playground.learnqa.ru/api/user/auth");
+                .baseUri(urlAuth);
         if (condition.equals("cookie")){
             Response responseForCheck = apiCoreRequest
-                    .makeGetRequestWithCookie("https://playground.learnqa.ru/api/user/auth",
+                    .makeGetRequestWithCookie(urlAuth,
                             this.cookie);
             Assertions.assertJsonByName(responseForCheck,"user_id",0);
         }
        else if (condition.equals("header")){
             Response responseForCheck = apiCoreRequest
-                    .makeGetRequestWithToken("https://playground.learnqa.ru/api/user/auth",
+                    .makeGetRequestWithToken(urlAuth,
                             this.header);
             Assertions.assertJsonByName(responseForCheck,"user_id",0);
 
@@ -82,9 +82,10 @@ public class AllureUserAuthTest extends BaseTestCase {
             if (condition.equals("cookie")) {
             spec.cookie("auth_sid",this.cookie);
 
-        }else if(condition.equals("header")){
+        }
+             else if(condition.equals("header")){
 
-            spec.header("x-csrf-token",this.header);
+             spec.header("x-csrf-token",this.header);
         } else {
             throw new IllegalArgumentException("Condition value is  "+ condition);
         }
