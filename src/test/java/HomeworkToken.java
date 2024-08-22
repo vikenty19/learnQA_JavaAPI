@@ -2,6 +2,8 @@ import io.restassured.RestAssured;
 import io.restassured.http.Headers;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
+import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collection;
@@ -44,6 +46,39 @@ public class HomeworkToken {
                 .put("https://playground.learnqa.ru/ajax/api/longtime_job")
                 .jsonPath();
         newresponse1.prettyPrint();
+
+    }
+    @Test
+    public void jobIsReady() throws InterruptedException {
+
+        JsonPath response = RestAssured
+                .given()
+                .when()
+                .get("https://playground.learnqa.ru/ajax/api/longtime_job")
+                .jsonPath();
+
+       response.prettyPrint();
+
+       String param = response.getString("token");
+       Map<String,String>header = new HashMap<>();
+       header.put("token",param);
+        JsonPath responseJob = RestAssured
+                .given()
+                .params(header)
+                .when()
+                .get("https://playground.learnqa.ru/ajax/api/longtime_job")
+                .jsonPath();
+        responseJob.prettyPrint();
+        Assertions.assertEquals("Job is NOT ready", responseJob.getString("status"));
+            Thread.sleep(response.getInt("seconds")*1000);
+        JsonPath responseJobFinal = RestAssured
+                .given()
+                .params(header)
+                .when()
+                .get("https://playground.learnqa.ru/ajax/api/longtime_job")
+                .jsonPath();
+        responseJobFinal.prettyPrint();
+        Assertions.assertEquals("Job is ready", responseJobFinal.getString("status"));
 
     }
 

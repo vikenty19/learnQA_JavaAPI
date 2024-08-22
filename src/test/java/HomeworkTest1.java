@@ -31,14 +31,14 @@ public class HomeworkTest1 {
                 .given()
                 .redirects()
                 .follow(false)
-                .when()
+            //    .when()
                 .get("https://playground.learnqa.ru/api/long_redirect")
                 .andReturn();
         int statusCode = response.getStatusCode();
         System.out.println(statusCode);
         //  response.prettyPrint();
-        Headers responseHeaders = response.getHeaders();
-        System.out.println(responseHeaders);
+     //   Headers responseHeaders = response.getHeaders();
+     //   System.out.println(responseHeaders);
 
         String locationHeader = response.getHeader("location");
         System.out.println(locationHeader);
@@ -57,11 +57,11 @@ public class HomeworkTest1 {
                     .given()
                     .redirects()
                     .follow(false)
-                    .when()
+                  //  .when()
                     .get(url)
                     .andReturn();
             statusCode = response.getStatusCode();
-            //        System.out.println(statusCode);
+              //     System.out.println(statusCode);
 
             if (statusCode == 301) {
                 count++;
@@ -75,6 +75,59 @@ public class HomeworkTest1 {
         while (statusCode != 200);
         System.out.println("Finally,statusCode is   " + statusCode);
         System.out.println("NUMBER OF REDIRECTS IS  " + count);
+    }
+    @Test
+    public void testRestHeaders() {
+        Map<String, String> headers = new HashMap<>();
+        headers.put("myHeader1", "myValue1");
+        headers.put("myHeader2", "myValue2");
+
+        Response response = RestAssured
+                .given()
+                .redirects()
+                .follow(false)
+                //    .when()
+                .get("https://playground.learnqa.ru/api/get_303")
+                .andReturn();
+       response.print();
+        Headers responseHeaders = response.getHeaders();
+        System.out.println(responseHeaders);
+
+        String locationHeader = response.getHeader("location");
+        System.out.println(locationHeader);
+        System.out.println(response.getHeader("Date"));
+    }
+    @Test
+    public void testRestCookies() {
+        Map<String, String> data = new HashMap<>();
+        data.put("login", "secret_login");
+        data.put("password", "secret_pass");
+
+         Response responseAuthCookie = RestAssured
+                .given()
+                .body(data)
+                //    .when()
+                .get("https://playground.learnqa.ru/api/get_auth_cookie")
+                 .andReturn() ;
+
+      Map<String,String> responseCookies = responseAuthCookie.getCookies();
+
+        System.out.println("\nCookies");
+        System.out.println(responseCookies);
+        System.out.println(responseCookies.get("auth_cookie"));
+
+        String responseCookie = responseCookies.get("auth_cookie");
+
+        Map<String,String >cookies = new HashMap<>();
+        if(responseCookie != null){
+        cookies.put("auth_cookie",responseCookie);}
+         Response responseToCheckAuth = RestAssured
+                 .given()
+                 .body(data)
+                 .cookies(cookies)
+                 .post("https://playground.learnqa.ru/api/check_auth_cookie")
+                 .andReturn();
+         responseToCheckAuth.print();
     }
 
 }

@@ -23,9 +23,10 @@ public class Homework2Junit {
         String name = "Vasya";
         JsonPath response = RestAssured
                 .given()
-                .queryParam("name",name)
+                .params("name",name)
                 .get("https://playground.learnqa.ru/api/hello")
                 .jsonPath();
+        response.prettyPrint();
         assertEquals("Hello, " + name,response.getString("answer"),"Unexpected result");
     }
     @ParameterizedTest

@@ -11,10 +11,25 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class HelloWorldTest {
     @Test
 
+    public void testHelloWorld(){
+    Map<String,String> Data = new HashMap<>();
+        Data.put("name","Putin huylo");
+        Data.put("name1","John");
+        Response response = RestAssured
+                .given()
+     //           .params("name","John")    //queryParams also possible
+                .params(Data)
+                .get("https://playground.learnqa.ru/api/hello")
+               .andReturn();
+        response.prettyPrint();
+        System.out.println("Status code is   :" +response.statusCode());
+    }
+    @Test
+
     public void testJsonPath() {
 
         HashMap<String, String> params = new HashMap<>();
-        params.put("name", "Santa");
+        params.put("name","Santa");
 
         JsonPath response = RestAssured
                 .given()

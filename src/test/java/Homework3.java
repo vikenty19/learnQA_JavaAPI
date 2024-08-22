@@ -7,6 +7,7 @@ import io.restassured.response.Response;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.HashMap;
@@ -18,14 +19,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class Homework3 {
     @ParameterizedTest
     @ValueSource(strings = {"1", "12345", "12345678910123456", "vasyavasyavasya", "vasyavasyavasya1"})
-    public void shortPhraseTest(String givenString) {
-        int length = givenString.length();
+    public void shortPhraseTest(String name) {
+        int length = name.length();
         if (length <= 15) {
-            givenString = "Name doesn't exist";
+            name = "Name doesn't exist";
         }
-        String answer = (length > 15) ? givenString : "Name doesn't exist";
+        String answer = (length > 15) ? name : "Name doesn't exist";
         System.out.println(answer);
-        assertEquals(givenString, answer, "Name doesn't exist");
+        assertEquals(name, answer, "Name doesn't exist");
 
     }
 
@@ -98,6 +99,31 @@ public class Homework3 {
 
     }
 
+    @ParameterizedTest
+    @CsvSource({"Mozilla/5.0 (Linux; U; Android 4.0.2; en-us; Galaxy Nexus Build/ICL53F) AppleWebKit/534.30 (KHTML.like Gecko) Version/4.0 Mobile Safari/534.30,Mobile,No,Android",
+            "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html),Googlebot,Unknown,Unknown",
+            "Mozilla/5.0 (iPad; CPU OS 13_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML. like Gecko) CriOS/91.0.4472.77 Mobile/15E148 Safari/604.1,Mobile,Chrome,iOS",
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML.like Gecko) Chrome/91.0.4472.77 Safari/537.36 Edg/91.0.100.0,Web,Chrome,No",
+            "Mozilla/5.0 (iPad; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML.like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1,Mobile,No,iPhone"})
+    public void checkUserAgentHeader(String name,String platform,String browser,String device) {
+        Map<String, String> headers = new HashMap<>();
+        headers.put("user-agent", name);
+        Response response = RestAssured
+                .given()
+                .headers(headers)
+                .get("https://playground.learnqa.ru/ajax/api/user_agent_check")
+                .andReturn();
+        JsonPath jsonPath = response.jsonPath();
+        //    response.prettyPrint();
+         //      String userAgent = jsonPath.get("user_agent");
+        //    System.out.println("user-agent  " + userAgent);
+        String browserPlatform = jsonPath.get("platform");
+        String browserName = jsonPath.get("browser");
+        String deviceType = jsonPath.get("device");
+        assertEquals(platform,browserPlatform,"Unexpected platform " +browserPlatform);
+        assertEquals(browser,browserName,"Unexpected browser name  "+browserName);
+        assertEquals(device,deviceType,"Unexpected device  "+ deviceType);
+        }
 
-}
+    }
 
