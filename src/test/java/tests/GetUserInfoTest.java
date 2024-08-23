@@ -63,7 +63,7 @@ public class GetUserInfoTest extends BaseTestCase {
                 .andReturn();*/
         String authCookie = this.getCookie(getAuthResponse,"auth_sid");
         String header = this.getHeader(getAuthResponse,"x-csrf-token");
-   
+
         Response responseUserData = apiCoreRequest
                 .makeGetRequest("https://playground.learnqa.ru/api/user/1"
                 ,header

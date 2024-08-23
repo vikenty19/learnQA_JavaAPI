@@ -3,6 +3,7 @@ package tests;
 import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
+import lib.ApiCoreRequest;
 import lib.Assertions;
 import lib.BaseTestCase;
 import lib.DateGenerator;
@@ -12,6 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class UserEditTest extends BaseTestCase {
+    protected final ApiCoreRequest apiCoreRequest = new ApiCoreRequest();
     @Test
     public void testEditJustCreatedUser(){
         //Generate user
@@ -30,7 +32,7 @@ public class UserEditTest extends BaseTestCase {
         Response responseLoginData = RestAssured
                 .given()
                 .body(loginData)
-                .post("https://playground.learnqa.ru/api/user/login")
+                .post(urlLogin)
                 .andReturn();
         //Edit user name
         String newName = "New name";
@@ -55,7 +57,35 @@ public class UserEditTest extends BaseTestCase {
         Assertions.assertJsonByName(responseUserNewData,"firstName",newName);
 
     }
+@Test
+ public void testEditUserByOtherUser(){
+        //register user
+    Map<String,String> authData = DateGenerator.getRegistrationData();
+    JsonPath responseCreateAuth = RestAssured
+            .given()
+            .body(authData)
+            .post("https://playground.learnqa.ru/api/user/")
+            .jsonPath();
+    String userId = responseCreateAuth.getString("id");
+     System.out.println(userId);
+
+     //Edit other user without authorization
+     String newUserName = "dark day";
+     Map<String,String>editData = new HashMap<>();
+     editData.put("userName",newUserName);
+     Response responseEditUser = apiCoreRequest
+             .makePostRequestUnauthorized("https://playground.learnqa.ru/api/user/" + userId,editData);
+
+     // get new user data
+    Response responseUserNewData = RestAssured
+            .given()
+            .get("https://playground.learnqa.ru/api/user/" + userId)
+            .andReturn();
+    System.out.println(responseUserNewData.asString());
 
 
+
+
+}
 
 }
