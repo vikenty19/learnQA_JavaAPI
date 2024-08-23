@@ -11,6 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class BaseTestCase {
    protected String[]fields = {"firstName","lastName","email"};
     protected String[]fieldsForAuth= {"username","firstName","lastName","email"};
+    protected String[]fieldsNotAuth ={"email","password","firstName","lastName"};
     protected static String[]keys = {"email","password","username","firstName","lastName"};
     protected String urlAuth = "https://playground.learnqa.ru/api/user/auth";
     protected String urlLogin = "https://playground.learnqa.ru/api/user/login";
