@@ -67,14 +67,20 @@ public class UserEditTest extends BaseTestCase {
             .post("https://playground.learnqa.ru/api/user/")
             .jsonPath();
     String userId = responseCreateAuth.getString("id");
-     System.out.println(userId);
+     System.out.println(userId+"  "+ authData.get("username"));
 
      //Edit other user without authorization
      String newUserName = "dark day";
      Map<String,String>editData = new HashMap<>();
-     editData.put("userName",newUserName);
-     Response responseEditUser = apiCoreRequest
-             .makePostRequestUnauthorized("https://playground.learnqa.ru/api/user/" + userId,editData);
+     editData.put("username",newUserName);
+    System.out.println(editData);
+    Response responseEditUser= RestAssured
+            .given()
+            .body(editData)
+            .put("https://playground.learnqa.ru/api/user/" + userId)
+            .andReturn();
+    // Response responseEditUser = apiCoreRequest
+      //       .makePostRequestUnauthorized("https://playground.learnqa.ru/api/user/" + userId,editData);
 
      // get new user data
     Response responseUserNewData = RestAssured
