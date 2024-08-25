@@ -71,4 +71,48 @@ public class DeleteUserTest extends BaseTestCase {
       Assertions.assertResponseCodeEquals(getDeletedUserInfo,404);
    }
 
+   @Test
+    public void deleteUserWithOtherId(){
+       //Create user
+       UserAuthTest userAuthTest = new UserAuthTest();
+       Map<String,String>data = DateGenerator.getRegistrationData();
+       JsonPath responseUserReg = RestAssured
+               .given()
+               .body(data)
+               .post(urlReg)
+               .jsonPath();
+       String userID = responseUserReg.getString("id");
+
+       //Login user
+       userAuthTest.loginUser(data.get("email"));//=>reload loginUser method
+
+
+
+       //create another user
+       Map<String,String>data1 = DateGenerator.getRegistrationData();
+       JsonPath responseUserReg1 = RestAssured
+               .given()
+               .body(data1)
+               .post(urlReg)
+               .jsonPath();
+       String newUserID = responseUserReg1.getString("id");
+       System.out.println("New Id  " + newUserID);
+
+
+       //Delete created user
+       Response responseDeletedUser =RestAssured
+               .given()
+               .header("x-csrf-token",userAuthTest.header)
+               .cookie("auth_sid",userAuthTest.cookie)
+               .delete(urlReg+newUserID)
+               .andReturn();
+       System.out.println(responseDeletedUser.asString());
+       //Check
+       Response getDeletedUserInfo = RestAssured
+               .get(urlReg + newUserID)
+               .andReturn();
+       System.out.println(urlReg + newUserID);
+          System.out.println(getDeletedUserInfo.asString());
+   }
+
 }
