@@ -106,13 +106,17 @@ public class DeleteUserTest extends BaseTestCase {
                .cookie("auth_sid",userAuthTest.cookie)
                .delete(urlReg+newUserID)
                .andReturn();
-       System.out.println(responseDeletedUser.asString());
+
        //Check
        Response getDeletedUserInfo = RestAssured
                .get(urlReg + newUserID)
                .andReturn();
-       System.out.println(urlReg + newUserID);
+       System.out.println(getDeletedUserInfo.statusCode());
           System.out.println(getDeletedUserInfo.asString());
+          Assertions.assertResponseCodeEquals(responseDeletedUser,400);
+          Assertions.assertJsonByName(responseDeletedUser,"error",
+                  "This user can only delete their own account.");
+          Assertions.assertJsonHasNotValues(getDeletedUserInfo,fields);
    }
 
 }
