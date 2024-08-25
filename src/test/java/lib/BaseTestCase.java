@@ -15,7 +15,7 @@ public class BaseTestCase {
     protected static String[]keys = {"email","password","username","firstName","lastName"};
     protected String urlAuth = "https://playground.learnqa.ru/api/user/auth";
     protected String urlLogin = "https://playground.learnqa.ru/api/user/login";
-    protected String urlReg = "https://playground.learnqa.ru/api/user";
+    protected String urlReg = "https://playground.learnqa.ru/api/user/";
 
     protected String getHeader(Response Response,String name){
         Headers headers = Response.getHeaders();

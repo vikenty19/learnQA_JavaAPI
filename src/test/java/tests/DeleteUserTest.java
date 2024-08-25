@@ -1,10 +1,12 @@
 package tests;
 
 import io.restassured.RestAssured;
+import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import lib.ApiCoreRequest;
 import lib.Assertions;
 import lib.BaseTestCase;
+import lib.DateGenerator;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
@@ -17,7 +19,8 @@ public class DeleteUserTest extends BaseTestCase {
         Map<String,String>data = new HashMap<>();
         data.put("email","vinkotov@example.com");
         data.put("password","1234");
-        String URL = urlReg + "/2";
+        String URL = urlReg + "2";
+        System.out.println(URL);
                Response responseToDelete = apiCoreRequest
                 .deleteProtectedUser(URL,data);
       /*  Response responseToDelete = RestAssured
@@ -32,6 +35,40 @@ public class DeleteUserTest extends BaseTestCase {
 
 
     }
+   @Test
+    public void testDeleteJustCreatedUser(){
+        //Create user
+       UserAuthTest userAuthTest = new UserAuthTest();
+        Map<String,String>data = DateGenerator.getRegistrationData();
+       JsonPath responseUserReg = RestAssured
+               .given()
+               .body(data)
+               .post(urlReg)
+               .jsonPath();
+      String userID = responseUserReg.getString("id");
 
+      //Login user
+       userAuthTest.loginUser(data.get("email"));//=>reload loginUser method
+
+         System.out.println(userAuthTest.user_id);
+
+      //Delete created user
+      Response responseDeletedUser =RestAssured
+               .given()
+               .header("x-csrf-token",userAuthTest.header)
+               .cookie("auth_sid",userAuthTest.cookie)
+               .delete(urlReg+userID)
+               .andReturn();
+
+       //Check If User deleted
+
+       Response getDeletedUserInfo = RestAssured
+                .get(urlReg + userID)
+               .andReturn();
+    //   System.out.println(urlReg + userID);
+    //   System.out.println(getDeletedUserInfo.asString());
+      Assertions.assertResponseTextEquals(getDeletedUserInfo,"User not found");
+      Assertions.assertResponseCodeEquals(getDeletedUserInfo,404);
+   }
 
 }

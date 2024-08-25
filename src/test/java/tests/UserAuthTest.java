@@ -43,6 +43,25 @@ public class UserAuthTest extends BaseTestCase {
 
 
     };
+    public void loginUser(String email) {
+
+
+        Map<String, String> authData = new HashMap<>();
+        authData.put("email",email);
+        authData.put("password","123");
+        Response responseGetAuth = RestAssured
+                .given()
+                .body(authData)
+                .post("https://playground.learnqa.ru/api/user/login")
+                .andReturn();
+        this.cookie =  this.getCookie(responseGetAuth,"auth_sid");
+        this.header =  this.getHeader(responseGetAuth,"x-csrf-token");
+        this.user_id = this.getIntFromResponse(responseGetAuth,"user_id");
+
+
+
+    };
+
 
     @Test
      public void testAuthUser(){
