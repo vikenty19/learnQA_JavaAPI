@@ -67,5 +67,14 @@ public class ApiCoreRequest {
                 .andReturn();
 
    }
+   @Step("Make delete request for protected user")
+    public Response deleteProtectedUser(String url,Map<String,String>data){
+        return given()
+                .filter(new AllureRestAssured())
+                .body(data)
+                .delete(url)
+                .andReturn();
+
+   }
 }
 

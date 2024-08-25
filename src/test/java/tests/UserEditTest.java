@@ -89,7 +89,7 @@ public class UserEditTest extends BaseTestCase {
             .andReturn();
     System.out.println(responseUserNewData.asString());
 
-
+ Assertions.assertJsonByName(responseUserNewData,"username","learnqa");
 
 
 }
