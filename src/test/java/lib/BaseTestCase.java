@@ -1,7 +1,11 @@
 package lib;
 
+import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.http.Headers;
 import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
+import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
 import java.util.Map;
 
@@ -16,7 +20,20 @@ public class BaseTestCase {
     protected String urlAuth = "https://playground.learnqa.ru/api/user/auth";
     protected String urlLogin = "https://playground.learnqa.ru/api/user/login";
     protected String urlReg = "https://playground.learnqa.ru/api/user/";
+    protected RequestSpecification spec;
+   public RequestSpecification setUpSpec(){
+        spec=new RequestSpecBuilder()
+                .setBaseUri(urlAuth)
+                .build();
+ return this.spec;
+    }
 
+/*    @BeforeEach
+    public void setUpSpec() {
+        spec1 = new RequestSpecBuilder()
+                .setBaseUri(urlAuth)
+                .build();
+    }*/
     protected String getHeader(Response Response,String name){
         Headers headers = Response.getHeaders();
         assertTrue(headers.hasHeaderWithName(name),"Response doesn't have header with name  "+ name);

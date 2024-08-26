@@ -3,6 +3,7 @@ import io.restassured.http.Header;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
+import lib.BaseTestCase;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -11,10 +12,11 @@ import io.restassured.http.Headers;
 import java.util.HashMap;
 import java.util.Map;
 
+import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class JunitAndParam {
+public class ParamsAndSpec extends BaseTestCase {
     @Test
     public void testFor200(){
 
@@ -39,8 +41,7 @@ public class JunitAndParam {
             queryParams.put("name",name);
 
         }
-        JsonPath response = RestAssured
-                .given()
+        JsonPath response = given()
                 .queryParams(queryParams)
                 .get("https://playground.learnqa.ru/api/hello")
                 .jsonPath();
@@ -54,10 +55,9 @@ public class JunitAndParam {
         Map<String,String>authData = new HashMap<>();
         authData.put("email","vinkotov@example.com");
         authData.put("password","1234");
-        Response responseGetAuth = RestAssured
-                .given()
+        Response responseGetAuth = given()
                 .body(authData)
-                .post("https://playground.learnqa.ru/api/user/login")
+                .post(urlLogin)
                 .andReturn();
 
         Map<String,String> cookies = responseGetAuth.getCookies();
@@ -72,8 +72,7 @@ public class JunitAndParam {
         Header token = headers.get("x-csrf-token");
         String authCookie = cookies.get("auth_sid");
         System.out.println(token + " \n  " + responseGetAuth.getHeader("x-csrf-token"));
-        JsonPath responseCheckAuth = RestAssured
-                .given()
+        JsonPath responseCheckAuth = given()
                // .header("x-csrf-token",responseGetAuth.getHeader("x-csrf-token"))
                 .header(token)
                // .cookie("auth_sid",responseGetAuth.getCookie("auth_sid"))
@@ -91,17 +90,18 @@ public class JunitAndParam {
     Map<String,String>authData = new HashMap<>();
         authData.put("email","vinkotov@example.com");
         authData.put("password","1234");
-    Response responseGetAuth = RestAssured
-            .given()
+    Response responseGetAuth = given()
             .body(authData)
-            .post("https://playground.learnqa.ru/api/user/login")
+            .post(urlLogin)
             .andReturn();
 
     Map<String,String> cookies = responseGetAuth.getCookies();
     Headers headers = responseGetAuth.getHeaders();
-        RequestSpecification spec = RestAssured
-                .given()
-                .baseUri("https://playground.learnqa.ru/api/user/auth");
+        setUpSpec();
+       RequestSpecification spec = RestAssured
+             .given(this.spec);
+         //   .baseUri("https://playground.learnqa.ru/api/user/auth");
+
         if (condition.equals("cookie")) {
              spec.cookie("auth_sid",cookies.get("auth_sid"));
 
@@ -112,6 +112,7 @@ public class JunitAndParam {
             throw new IllegalArgumentException("Condition value is  "+ condition);
         }
         JsonPath responseForCheck = spec.get().jsonPath();
+        responseForCheck.prettyPrint();
         assertEquals(0,responseForCheck.getInt("user_id"),"User id must be 0 for unauth user");
 
 

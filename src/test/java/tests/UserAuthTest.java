@@ -5,6 +5,8 @@ import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import lib.BaseTestCase;
+import org.assertj.core.api.SoftAssertions;
+import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -34,7 +36,7 @@ public class UserAuthTest extends BaseTestCase {
         Response responseGetAuth = RestAssured
                 .given()
                 .body(authData)
-                .post("https://playground.learnqa.ru/api/user/login")
+                .post(urlLogin)
                 .andReturn();
         this.cookie =  this.getCookie(responseGetAuth,"auth_sid");
         this.header =  this.getHeader(responseGetAuth,"x-csrf-token");
@@ -43,6 +45,26 @@ public class UserAuthTest extends BaseTestCase {
 
 
     };
+    @Test
+    public void loginUser1() {
+
+
+        Map<String, String> authData = new HashMap<>();
+        authData.put("email","vinkotov@example.com");
+        authData.put("password","1234");
+        Response responseGetAuth = RestAssured
+                .given()
+                .body(authData)
+                /*.auth()
+                .preemptive()
+                .basic()*/
+                 .post("https://playground.learnqa.ru/api/user/login")
+                .andReturn();
+      responseGetAuth.print();
+        assertEquals(responseGetAuth.statusCode(), 200);
+
+    };
+
     public void loginUser(String email) {
 
 
