@@ -50,6 +50,9 @@ public class ParamsAndSpec extends BaseTestCase {
         System.out.println(expectedAnswer);
         assertEquals("Hello, " + expectedAnswer,answer,"Unexpected answer");
     }
+
+
+
     @Test
     public void testAuthUser(){
         Map<String,String>authData = new HashMap<>();
@@ -59,7 +62,8 @@ public class ParamsAndSpec extends BaseTestCase {
                 .body(authData)
                 .post(urlLogin)
                 .andReturn();
-
+    /*    JsonPath js = new JsonPath(responseGetAuth.asString());// just example how to parse response
+        js.prettyPrint();*/
         Map<String,String> cookies = responseGetAuth.getCookies();
         Headers headers = responseGetAuth.getHeaders();
         int user_id = responseGetAuth.jsonPath().getInt("user_id");
@@ -84,6 +88,7 @@ public class ParamsAndSpec extends BaseTestCase {
         assertEquals(user_id,userIdForCheck,"user id on reg doesn't match ");
     }
 
+
     @ParameterizedTest
     @ValueSource(strings = {"cookie","header"})
             public void loginWithoutCookieOrHeader(String condition){
@@ -91,6 +96,8 @@ public class ParamsAndSpec extends BaseTestCase {
         authData.put("email","vinkotov@example.com");
         authData.put("password","1234");
     Response responseGetAuth = given()
+            .log()
+            .all()
             .body(authData)
             .post(urlLogin)
             .andReturn();
@@ -98,8 +105,8 @@ public class ParamsAndSpec extends BaseTestCase {
     Map<String,String> cookies = responseGetAuth.getCookies();
     Headers headers = responseGetAuth.getHeaders();
         setUpSpec();
-       RequestSpecification spec = RestAssured
-             .given(this.spec);
+       RequestSpecification spec = //RestAssured
+             given(this.spec);
          //   .baseUri("https://playground.learnqa.ru/api/user/auth");
 
         if (condition.equals("cookie")) {
