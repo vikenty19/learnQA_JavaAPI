@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="All Test Suite">
+    <test verbose="2" preserve-order="true" name="C:/Users/Acer/Documents/GitHub1/learnQA_JavaAPI/src/test/java/tests">
+        <classes>
+            <class name="tests.AllureUserAuthTest">
+                <methods>
+                    <include name="testAuthUser"/>
+                </methods>
+            </class>
+            <class name="tests.DeleteUserTest">
+                <methods>
+                    <include name="testDeleteProtectedUser"/>
+                    <include name="testDeleteJustCreatedUser"/>
+                    <include name="deleteUserWithOtherId"/>
+                </methods>
+            </class>
+            <class name="tests.GetUserInfoTest">
+                <methods>
+                    <include name="getUserInfoNotAuth"/>
+                    <include name="getUserDataAuthAsSameUser"/>
+                    <include name="getUserDataAuthAsOtherUser"/>
+                </methods>
+            </class>
+            <class name="tests.UserAuthTest">
+                <methods>
+                    <include name="loginUser1"/>
+                    <include name="testAuthUser"/>
+                </methods>
+            </class>
+            <class name="tests.UserEditTest">
+                <methods>
+                    <include name="testEditJustCreatedUser"/>
+                    <include name="testEditUserByOtherUser"/>
+                </methods>
+            </class>
+            <class name="tests.UserRegisterTest">
+                <methods>
+                    <include name="createUserWithExistingEmail"/>
+                    <include name="createUserSuccessfully"/>
+                    <include name="createUserIncorrectEmail"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+</suite>

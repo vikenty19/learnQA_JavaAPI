@@ -10,6 +10,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,7 +39,10 @@ public class UserRegisterTest extends BaseTestCase {
         Response responseCreateAuth = RestAssured
                 .given()
                 .body(userData)
-                .post("https://playground.learnqa.ru/api/user")
+                // just idea to transfer screenshot files
+                  //      .multiPart("file",new File("C:\\Users\\Acer\\" +
+                    //            "Documents\\ShareX\\Screenshots\\2023-02\\chrome_492GhAbcU9.png"))
+                .post(urlReg)
                 .andReturn();
         System.out.println(responseCreateAuth.asString());
          Assertions.assertResponseCodeEquals(responseCreateAuth,200);
