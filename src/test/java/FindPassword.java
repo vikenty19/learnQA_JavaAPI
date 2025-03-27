@@ -42,8 +42,7 @@ public class FindPassword {
                     .when()
                     .post("https://playground.learnqa.ru/ajax/api/get_secret_password_homework")
                     .andReturn();
-            //         getResponse.prettyPrint();
-            //put auth cookie and [i] password
+   
             String authCookie = getResponse.getCookie("auth_cookie");
             Map<String, String> cookies = new HashMap<>();
             cookies.put("auth_cookie", authCookie);
