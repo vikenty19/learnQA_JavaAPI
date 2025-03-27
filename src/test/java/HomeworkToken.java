@@ -39,7 +39,7 @@ public class HomeworkToken {
         //  waiting for task completion
 
         System.out.println(time);
-        Thread.sleep(time*1000);
+        Thread.sleep(time* 1000L);
         JsonPath newresponse1 = RestAssured
                 .given()
                 .queryParams(headers)

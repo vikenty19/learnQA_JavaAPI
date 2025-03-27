@@ -2,6 +2,7 @@ import io.restassured.RestAssured;
 import io.restassured.http.Headers;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
+import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collection;
@@ -20,6 +21,30 @@ public class HomeworkTest1 {
         response.prettyPrint();
         System.out.println(response.getString("messages[1].message"));
     }
+    @Test
+    public void testJsonPath1() {
+
+
+        JsonPath response = RestAssured
+                .get("https://playground.learnqa.ru/api/show_all_headers")
+                .jsonPath();
+      //  response.prettyPrint();
+        System.out.println(response.getString("result.GEOIP-CITY"));
+
+    }
+    @Test
+    public void testHeaders() {
+
+
+       Response response = RestAssured
+                  .get("https://playground.learnqa.ru/api/show_all_headers")
+                .andReturn();
+       response.prettyPrint();
+
+        String responseHeaders = response.getHeader("Keep-Alive");
+        System.out.println(responseHeaders);
+    }
+
 
     @Test
     public void testRestAssured() {
@@ -77,6 +102,37 @@ public class HomeworkTest1 {
         System.out.println("NUMBER OF REDIRECTS IS  " + count);
     }
     @Test
+    public void testLongRedirect1() {
+        Map<String, String> headers = new HashMap<>();
+        headers.put("myHeader1", "myValue1");
+        headers.put("myHeader2", "myValue2");
+        String url = "https://playground.learnqa.ru/api/long_redirect";
+        int statusCode = 0;
+        int count = 0;
+
+       while (statusCode !=200){
+
+            Response response = RestAssured
+                    .given()
+                    .redirects()
+                    .follow(false)
+                    //  .when()
+                    .get(url)
+                    .andReturn();
+            statusCode = response.getStatusCode();
+                 System.out.println(statusCode);
+
+                count++;
+//             присваевываем новый  url
+            url = response.getHeader("location");
+            System.out.println(url);
+           System.out.println(count);
+        }
+
+        System.out.println("Finally,statusCode is   " + statusCode);
+        System.out.println("NUMBER OF REDIRECTS IS  " + count);
+    }
+    @Test
     public void testRestHeaders() {
         Map<String, String> headers = new HashMap<>();
         headers.put("myHeader1", "myValue1");
@@ -114,13 +170,13 @@ public class HomeworkTest1 {
 
         System.out.println("\nCookies");
         System.out.println(responseCookies);
-        System.out.println(responseCookies.get("auth_cookie"));
 
         String responseCookie = responseCookies.get("auth_cookie");
 
         Map<String,String >cookies = new HashMap<>();
         if(responseCookie != null){
         cookies.put("auth_cookie",responseCookie);}
+
          Response responseToCheckAuth = RestAssured
                  .given()
                  .body(data)
@@ -128,6 +184,7 @@ public class HomeworkTest1 {
                  .post("https://playground.learnqa.ru/api/check_auth_cookie")
                  .andReturn();
          responseToCheckAuth.print();
+        Assert.assertTrue(responseCookie != null);
     }
 
 }

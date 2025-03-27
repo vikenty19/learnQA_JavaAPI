@@ -11,11 +11,7 @@ public class MyTasks {
         for (int i = myString.length() - 1; i >= 0; i--) {
             myStringReverse = myStringReverse + myString.charAt(i);
         }
-        if (myString.equalsIgnoreCase(myStringReverse)) {
-            return true;
-        } else {
-            return false;
-        }
+        return myString.equalsIgnoreCase(myStringReverse);
 
     }
 
