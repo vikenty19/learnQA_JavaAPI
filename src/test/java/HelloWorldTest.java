@@ -2,6 +2,8 @@ import io.restassured.path.json.JsonPath;
 import org.junit.jupiter.api.Test;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -84,5 +86,26 @@ public class HelloWorldTest {
                 .get("https://playground.learnqa.ru/api/map")
                 .andReturn();
         assertEquals(200,response.statusCode(), "Unexpected status code");
+}
+@ParameterizedTest
+@ValueSource(strings = {"","Santa","John"})
+    public void testHelloWorldWithName(String name){
+        Map<String,String >names = new HashMap<>();
+        if (name.length()>0){
+            names.put("name",name);
+        }
+
+
+        JsonPath response= RestAssured
+                .given()
+                .params(names)
+                .get("https://playground.learnqa.ru/api/hello")
+    .jsonPath();
+        String answer = response.getString("answer");
+    System.out.println(answer);
+    String expectedName = (name.length()>0)?name:"someone";
+        assertEquals("Hello, "+expectedName,answer,"The answer is not expected");
+
+
 }
 }

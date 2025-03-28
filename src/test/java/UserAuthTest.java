@@ -1,5 +1,6 @@
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
+import io.restassured.http.Header;
 import io.restassured.http.Headers;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
@@ -9,8 +10,13 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.when;
@@ -23,11 +29,12 @@ public class UserAuthTest {
     int userIdForCheck;
 
     @BeforeEach
-    public void loginUser(){
-        Map<String,String> userData = new HashMap<>();
-        userData.put("email","vinkotov@example.com");
-        userData.put("password","1234");
-        Response response = given()
+    public void loginUser() {
+        Map<String, String> userData = new HashMap<>();
+        userData.put("email", "vinkotov@example.com");
+        userData.put("password", "1234");
+        Response response = RestAssured
+                .given()
                 .body(userData)
                 .post("https://playground.learnqa.ru/api/user/login")
                 .andReturn();
@@ -38,50 +45,82 @@ public class UserAuthTest {
     }
 
     @Test
-    public void registerUserAndCheck(){
-        Map<String,String> userData = new HashMap<>();
-        userData.put("email","vinkotov@example.com");
-        userData.put("password","1234");
-        Response response = given()
+    public void registerUserAndCheck() {
+        Map<String, String> userData = new HashMap<>();
+        userData.put("email", "vinkotov@example.com");
+        userData.put("password", "1234");
+        Response response = RestAssured
+                .given()
                 .body(userData)
                 .post("https://playground.learnqa.ru/api/user/login")
                 .andReturn();
-        Map<String,String>coockies = response.getCookies();
+        Map<String, String> coockies = response.getCookies();
         assertTrue(coockies.containsKey("auth_sid"));// можно так или через string (показано ниже)
 
         String authCookie = response.getCookie("auth_sid");
-     int userId = response.jsonPath().getInt("user_id");
-       Headers headers = response.getHeaders();
-       assertEquals(200,response.statusCode(),"Unexpected status code");
-       assertNotEquals(null,authCookie,"AuthCookie doesn't exist");
-    //    System.out.println(authCookie);
-        assertTrue(headers.hasHeaderWithName("x-csrf-token"),"Response doesn't have header to auth");
-        assertTrue((userId>0),"User id must be greater then zero");
+        int userId = response.jsonPath().getInt("user_id");
+        Headers headers = response.getHeaders();
+        assertEquals(200, response.statusCode(), "Unexpected status code");
+        assertNotEquals(null, authCookie, "AuthCookie doesn't exist");
+        //    System.out.println(authCookie);
+        assertTrue(headers.hasHeaderWithName("x-csrf-token"), "Response doesn't have header to auth");
+        assertTrue((userId > 0), "User id must be greater then zero");
 
-         JsonPath responseCheckAuth = given()
-                 .header("x-csrf-token",response.getHeader("x-csrf-token"))
-                 .cookie("auth_sid",response.getCookie("auth_sid"))
-                 .get("https://playground.learnqa.ru/api/user/auth")
-                 .jsonPath();
-         int userIdForCheck = responseCheckAuth.getInt("user_id");
-         assertTrue(userIdForCheck > 0,"user id must be greater than 0"+ userIdForCheck);
-         assertEquals(userId,userIdForCheck,"User id not equals to expected"+ userIdForCheck);
+        JsonPath responseCheckAuth = RestAssured
+                .given()
+                .header("x-csrf-token", response.getHeader("x-csrf-token"))
+                .cookie("auth_sid", response.getCookie("auth_sid"))
+                .get("https://playground.learnqa.ru/api/user/auth")
+                .jsonPath();
+        int userIdForCheck = responseCheckAuth.getInt("user_id");
+        assertTrue(userIdForCheck > 0, "user id must be greater than 0" + userIdForCheck);
+        assertEquals(userId, userIdForCheck, "User id not equals to expected" + userIdForCheck);
+
+    }
+
+    @Test
+    public void authUser() throws IOException {
+        Properties properties = new Properties();
+        File data = new File("./src/test/java/lib/properties");
+        FileInputStream loadData = new FileInputStream(data);
+        properties.load(loadData);
+        Map<String, String> authData = new HashMap<>();
+        authData.put("email", properties.getProperty("email"));
+        authData.put("password", properties.getProperty("password"));
+        Response responseForAuth = RestAssured
+                .given()
+                .body(authData)
+                .post("https://playground.learnqa.ru/api/user/login")
+                .andReturn();
+        String authCookie = responseForAuth.getCookie("auth_sid");
+        int userId = responseForAuth.jsonPath().getInt("user_id");
+        String token = responseForAuth.getHeader("x-csrf-token");
+        //   System.out.println( userId);
+        JsonPath responseForReg = RestAssured
+                .given()
+                .header("x-csrf-token", token)
+                .cookie("auth_sid", authCookie)
+                .get("https://playground.learnqa.ru/api/user/auth")
+                .jsonPath();
+        System.out.println(userId + " userId  --->" + responseForReg.getInt("user_id"));
+        assertEquals(userId, responseForReg.getInt("user_id"), "user has not the same id");
+
 
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"cookie","header"})
-    public void negativeAuthTests(String condition){
-        Map<String,String >userData = new HashMap<>();
-        userData.put("email","vinkotov@example.com");
-        userData.put("password","1234");
+    @ValueSource(strings = {"cookie", "header"})
+    public void negativeAuthTests(String condition) {
+        Map<String, String> userData = new HashMap<>();
+        userData.put("email", "vinkotov@example.com");
+        userData.put("password", "1234");
         Response response = given()
                 .body(userData)
                 .post("https://playground.learnqa.ru/api/user/login")
                 .andReturn();
-        Map<String,String>cookies = response.getCookies();
-       Headers headers = response.getHeaders();
-       // spec for the first variant
+        Map<String, String> cookies = response.getCookies();
+        Headers headers = response.getHeaders();
+        // spec for the first variant
       /*  RequestSpecification requestSpecification = new RequestSpecBuilder()
                 .setBaseUri("https://playground.learnqa.ru/api/user/auth")
                 .build();*/
@@ -90,14 +129,12 @@ public class UserAuthTest {
         RequestSpecification requestSpecification = RestAssured
                 .given().baseUri("https://playground.learnqa.ru/api/user/auth");
 
-        if(condition.equals("cookie")){
-            requestSpecification.cookie("auth_sid",cookies.get("auth_sid"));
-        }
-        else if(condition.equals("header")){
-            requestSpecification.header("x-csrf-token",headers.get("x-csrf-token"));
+        if (condition.equals("cookie")) {
+            requestSpecification.cookie("auth_sid", cookies.get("auth_sid"));
+        } else if (condition.equals("header")) {
+            requestSpecification.header("x-csrf-token", headers.get("x-csrf-token"));
 
-        }
-        else {
+        } else {
             throw new IllegalArgumentException("Unknown condition value ----> " + condition);
         }
 
@@ -111,6 +148,6 @@ public class UserAuthTest {
 
         JsonPath userIdForCheck = requestSpecification.get().jsonPath();
         userIdForCheck.prettyPrint();
-        assertEquals(0,userIdForCheck.getInt("user_id"));
+        assertEquals(0, userIdForCheck.getInt("user_id"));
     }
 }
