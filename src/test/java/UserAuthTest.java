@@ -27,6 +27,7 @@ public class UserAuthTest {
     String cookie;
     String header;
     int userIdForCheck;
+    Properties properties;
 
     //   @BeforeEach
     public void loginUser() {
@@ -74,7 +75,7 @@ public class UserAuthTest {
 
     @Test
     public void authUser() throws IOException {
-        Properties properties = new Properties();
+
         File data = new File("./src/test/java/lib/properties");
         FileInputStream loadData = new FileInputStream(data);
         properties.load(loadData);
@@ -104,14 +105,8 @@ public class UserAuthTest {
 
     @ParameterizedTest
     @ValueSource(strings = {"cookie", "header"})
-    public void negativeAuthTests(String condition) {
-        Map<String, String> userData = new HashMap<>();
-        userData.put("email", "vinkotov@example.com");
-        userData.put("password", "1234");
-        Response response = given()
-                .body(userData)
-                .post("https://playground.learnqa.ru/api/user/login")
-                .andReturn();
+    public void negativeAuthTests(String condition) throws IOException {
+        Response response= loginSuccess();
         Map<String, String> cookies = response.getCookies();
         Headers headers = response.getHeaders();
         // spec for the first variant
@@ -120,8 +115,10 @@ public class UserAuthTest {
                 .build();*/
 
         //spec for the second variant
+       // RequestSpecification requestSpecification = RestAssured
+        //        .given().baseUri("https://playground.learnqa.ru/api/user/auth");
         RequestSpecification requestSpecification = RestAssured
-                .given().baseUri("https://playground.learnqa.ru/api/user/auth");
+                .given().baseUri(properties.getProperty("authUrl"));
 
         if (condition.equals("cookie")) {
             requestSpecification.cookie("auth_sid", cookies.get("auth_sid"));
@@ -146,7 +143,7 @@ public class UserAuthTest {
     }
 
     public Response loginSuccess() throws IOException {
-        Properties properties = new Properties();
+        properties = new Properties();
         File data = new File("./src/test/java/lib/properties");
         FileInputStream loadData = new FileInputStream(data);
         properties.load(loadData);
@@ -156,7 +153,7 @@ public class UserAuthTest {
         return RestAssured
                 .given()
                 .body(authData)
-                .post("https://playground.learnqa.ru/api/user/login")
+                .post(properties.getProperty("loginUrl"))
                 .andReturn();
     }
 }

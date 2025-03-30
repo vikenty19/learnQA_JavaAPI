@@ -1,3 +1,5 @@
  password= password,123456,23456789,12345678,12345,qwerty,abc123,football,1234567,monkey,letmein,111111,1234567890,letmein,dragon,baseball,1234,sunshine,iloveyou,trustno1,princess,adobe123[a], 23123,ogin,admin,princess,trustno1,monkey,welcome,solo,q2w3e4r,"master","sunshine","666666","master","photoshop[a]","1qaz2wsx","qwertyuiop","passw0rd","shadow","lovely","shadow","ashley","master","654321","7777777","michael","login","!@#$%^&*","jesus","password1","superman","princess","hello","charlie","888888","superman","michael","princess","696969","qwertyuiop","hottie","freedom","aa123456","qazwsx",	"ninja","azerty","loveme","whatever","donald","mustang","trustno1","batman","zaq1zaq1","qazwsx","password1","Football","000000","trustno1",	"starwars",	"123qwe
  email = vinkotov@example.com
  password = 1234
+ loginUrl = https://playground.learnqa.ru/api/user/login
+ authUrl = https://playground.learnqa.ru/api/user/auth
