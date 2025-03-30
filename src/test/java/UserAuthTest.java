@@ -28,7 +28,7 @@ public class UserAuthTest {
     String header;
     int userIdForCheck;
 
-    @BeforeEach
+ //   @BeforeEach
     public void loginUser() {
         Map<String, String> userData = new HashMap<>();
         userData.put("email", "vinkotov@example.com");
@@ -45,22 +45,20 @@ public class UserAuthTest {
     }
 
     @Test
-    public void registerUserAndCheck() {
-        Map<String, String> userData = new HashMap<>();
-        userData.put("email", "vinkotov@example.com");
-        userData.put("password", "1234");
-        Response response = RestAssured
-                .given()
-                .body(userData)
-                .post("https://playground.learnqa.ru/api/user/login")
-                .andReturn();
-        Map<String, String> coockies = response.getCookies();
-        assertTrue(coockies.containsKey("auth_sid"));// можно так или через string (показано ниже)
+    public void registerUserAndCheck() throws IOException {
+
+          Response response =  loginSuccess();
+        Map<String, String> cookies = response.getCookies();
+        assertTrue(cookies.containsKey("auth_sid"));// можно так или через string (показано ниже)
 
         String authCookie = response.getCookie("auth_sid");
+
         int userId = response.jsonPath().getInt("user_id");
+        System.out.println(userId);
         Headers headers = response.getHeaders();
-        assertEquals(200, response.statusCode(), "Unexpected status code");
+       String token =response.getHeader("x-csrf-token");
+        System.out.println(token+"______ "+ authCookie+"_______ "+ userId);
+        assertEquals(200, loginSuccess().statusCode(), "Unexpected status code");
         assertNotEquals(null, authCookie, "AuthCookie doesn't exist");
         //    System.out.println(authCookie);
         assertTrue(headers.hasHeaderWithName("x-csrf-token"), "Response doesn't have header to auth");
@@ -68,12 +66,12 @@ public class UserAuthTest {
 
         JsonPath responseCheckAuth = RestAssured
                 .given()
-                .header("x-csrf-token", response.getHeader("x-csrf-token"))
-                .cookie("auth_sid", response.getCookie("auth_sid"))
+                .header("x-csrf-token", token)
+                .cookie("auth_sid", authCookie)
                 .get("https://playground.learnqa.ru/api/user/auth")
                 .jsonPath();
         int userIdForCheck = responseCheckAuth.getInt("user_id");
-        assertTrue(userIdForCheck > 0, "user id must be greater than 0" + userIdForCheck);
+        assertTrue(userIdForCheck > 0, "user id must be greater than 0  " + userIdForCheck);
         assertEquals(userId, userIdForCheck, "User id not equals to expected" + userIdForCheck);
 
     }
@@ -94,7 +92,7 @@ public class UserAuthTest {
                 .andReturn();
         String authCookie = responseForAuth.getCookie("auth_sid");
         int userId = responseForAuth.jsonPath().getInt("user_id");
-        String token = responseForAuth.getHeader("x-csrf-token");
+             String token = responseForAuth.getHeader("x-csrf-token");
         //   System.out.println( userId);
         JsonPath responseForReg = RestAssured
                 .given()
@@ -149,5 +147,19 @@ public class UserAuthTest {
         JsonPath userIdForCheck = requestSpecification.get().jsonPath();
         userIdForCheck.prettyPrint();
         assertEquals(0, userIdForCheck.getInt("user_id"));
+    }
+    public Response loginSuccess() throws IOException {
+        Properties properties = new Properties();
+        File data = new File("./src/test/java/lib/properties");
+        FileInputStream loadData = new FileInputStream(data);
+        properties.load(loadData);
+        Map<String, String> authData = new HashMap<>();
+        authData.put("email", properties.getProperty("email"));
+        authData.put("password", properties.getProperty("password"));
+        return RestAssured
+                .given()
+                .body(authData)
+                .post("https://playground.learnqa.ru/api/user/login")
+                .andReturn();
     }
 }
