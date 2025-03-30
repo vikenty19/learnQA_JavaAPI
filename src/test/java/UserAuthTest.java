@@ -28,7 +28,7 @@ public class UserAuthTest {
     String header;
     int userIdForCheck;
 
- //   @BeforeEach
+    //   @BeforeEach
     public void loginUser() {
         Map<String, String> userData = new HashMap<>();
         userData.put("email", "vinkotov@example.com");
@@ -47,17 +47,13 @@ public class UserAuthTest {
     @Test
     public void registerUserAndCheck() throws IOException {
 
-          Response response =  loginSuccess();
+        Response response = loginSuccess();
         Map<String, String> cookies = response.getCookies();
         assertTrue(cookies.containsKey("auth_sid"));// можно так или через string (показано ниже)
-
         String authCookie = response.getCookie("auth_sid");
-
         int userId = response.jsonPath().getInt("user_id");
-        System.out.println(userId);
         Headers headers = response.getHeaders();
-       String token =response.getHeader("x-csrf-token");
-        System.out.println(token+"______ "+ authCookie+"_______ "+ userId);
+        String token = response.getHeader("x-csrf-token");
         assertEquals(200, loginSuccess().statusCode(), "Unexpected status code");
         assertNotEquals(null, authCookie, "AuthCookie doesn't exist");
         //    System.out.println(authCookie);
@@ -92,7 +88,7 @@ public class UserAuthTest {
                 .andReturn();
         String authCookie = responseForAuth.getCookie("auth_sid");
         int userId = responseForAuth.jsonPath().getInt("user_id");
-             String token = responseForAuth.getHeader("x-csrf-token");
+        String token = responseForAuth.getHeader("x-csrf-token");
         //   System.out.println( userId);
         JsonPath responseForReg = RestAssured
                 .given()
@@ -148,6 +144,7 @@ public class UserAuthTest {
         userIdForCheck.prettyPrint();
         assertEquals(0, userIdForCheck.getInt("user_id"));
     }
+
     public Response loginSuccess() throws IOException {
         Properties properties = new Properties();
         File data = new File("./src/test/java/lib/properties");
