@@ -91,9 +91,7 @@ public class UserAuthTestWithBaseTestCase extends BaseTestCase {
     @ParameterizedTest
     @ValueSource(strings = {"cookie", "header"})
     public void negativeAuthTests(String condition) throws IOException {
-        Response response= loginSuccess();
-        Map<String, String> cookies = response.getCookies();
-        Headers headers = response.getHeaders();
+
         // spec for the first variant
       /*  RequestSpecification requestSpecification = new RequestSpecBuilder()
                 .setBaseUri("https://playground.learnqa.ru/api/user/auth")
@@ -103,12 +101,12 @@ public class UserAuthTestWithBaseTestCase extends BaseTestCase {
        // RequestSpecification requestSpecification = RestAssured
         //        .given().baseUri("https://playground.learnqa.ru/api/user/auth");
         RequestSpecification requestSpecification = RestAssured
-                .given().baseUri(properties.getProperty("authUrl"));
+                .given().baseUri(urlAuth);
 
         if (condition.equals("cookie")) {
-            requestSpecification.cookie("auth_sid", cookies.get("auth_sid"));
+            requestSpecification.cookie("auth_sid",this.cookie);
         } else if (condition.equals("header")) {
-            requestSpecification.header("x-csrf-token", headers.get("x-csrf-token"));
+            requestSpecification.header("x-csrf-token",this.header);
 
         } else {
             throw new IllegalArgumentException("Unknown condition value ----> " + condition);
@@ -127,18 +125,4 @@ public class UserAuthTestWithBaseTestCase extends BaseTestCase {
         assertEquals(0, userIdForCheck.getInt("user_id"));
     }
 
-    public Response loginSuccess() throws IOException {
-        properties = new Properties();
-        File data = new File("./src/test/java/lib/properties");
-        FileInputStream loadData = new FileInputStream(data);
-        properties.load(loadData);
-        Map<String, String> authData = new HashMap<>();
-        authData.put("email", properties.getProperty("email"));
-        authData.put("password", properties.getProperty("password"));
-        return RestAssured
-                .given()
-                .body(authData)
-                .post(properties.getProperty("loginUrl"))
-                .andReturn();
-    }
 }
