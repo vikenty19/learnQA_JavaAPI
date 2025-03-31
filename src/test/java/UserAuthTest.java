@@ -75,8 +75,8 @@ public class UserAuthTest {
 
     @Test
     public void authUser() throws IOException {
-
-        File data = new File("./src/test/java/lib/properties");
+        properties= new Properties();
+       File data = new File("./src/test/java/lib/properties");
         FileInputStream loadData = new FileInputStream(data);
         properties.load(loadData);
         Map<String, String> authData = new HashMap<>();
