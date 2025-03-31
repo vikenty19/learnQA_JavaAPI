@@ -4,6 +4,7 @@ import io.restassured.http.Header;
 import io.restassured.http.Headers;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
+import lib.BaseTestCase;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -16,7 +17,7 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class Homework3 {
+public class Homework3 extends BaseTestCase {
     @ParameterizedTest
     @ValueSource(strings = {"1", "12345", "12345678910123456", "vasyavasyavasya", "vasyavasyavasya1"})
     public void shortPhraseTest(String name) {
@@ -37,7 +38,9 @@ public class Homework3 {
                 .andReturn();
         Map<String, String> responseCookie = response.getCookies();
         System.out.println(responseCookie);
-        String cookie = response.getCookie("HomeWork");
+        String cookie = getCookie(response,"HomeWork");
+        System.out.println(cookie);
+        assertTrue(responseCookie.containsKey("HomeWork"));
         assertEquals("hw_value", cookie);
     }
 
@@ -50,13 +53,12 @@ public class Homework3 {
         Headers responseHeader = response.getHeaders();
          System.out.println(responseHeader);
         String header = response.getHeader("x-secret-homework-header");
-        String header1 = response.jsonPath().getString("success");
+        String result = response.jsonPath().getString("success");
 
        System.out.println(header);
-        System.out.println(header1);
-       System.out.println(header.toString());
-    assertTrue(responseHeader.hasHeaderWithName("x-secret-homework-header"));
-       assertEquals( header1,"!");
+        System.out.println(result);
+        assertTrue(responseHeader.hasHeaderWithName("x-secret-homework-header"));
+       assertEquals( result,"!");
 
     }
 
