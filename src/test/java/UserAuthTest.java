@@ -55,7 +55,7 @@ public class UserAuthTest {
         int userId = response.jsonPath().getInt("user_id");
         Headers headers = response.getHeaders();
         String token = response.getHeader("x-csrf-token");
-        assertEquals(200, loginSuccess().statusCode(), "Unexpected status code");
+        assertEquals(200, response.statusCode(), "Unexpected status code");
         assertNotEquals(null, authCookie, "AuthCookie doesn't exist");
         //    System.out.println(authCookie);
         assertTrue(headers.hasHeaderWithName("x-csrf-token"), "Response doesn't have header to auth");
@@ -65,7 +65,7 @@ public class UserAuthTest {
                 .given()
                 .header("x-csrf-token", token)
                 .cookie("auth_sid", authCookie)
-                .get("https://playground.learnqa.ru/api/user/auth")
+                .get(properties.getProperty("authUrl"))
                 .jsonPath();
         int userIdForCheck = responseCheckAuth.getInt("user_id");
         assertTrue(userIdForCheck > 0, "user id must be greater than 0  " + userIdForCheck);
