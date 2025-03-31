@@ -35,8 +35,8 @@ public class BaseTestCase {
                     .setBaseUri(urlAuth)
                     .build();
         }*/
-    protected String getHeader(Response Response, String name) {
-        Headers headers = Response.getHeaders();
+    protected String getHeader(Response response, String name) {
+        Headers headers = response.getHeaders();
         assertTrue(headers.hasHeaderWithName(name), "Response doesn't have header with name  " + name);
         return headers.getValue(name);
     }
