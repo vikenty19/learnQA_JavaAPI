@@ -43,7 +43,7 @@ public class GetUserInfoTest extends BaseTestCase {
                 .get("https://playground.learnqa.ru/api/user/2")
                 .andReturn();
 
-            Assertions.assertJsonHasValues(responseUserData,fieldsForAuth);
+            Assertions.assertJsonHasFields(responseUserData,fieldsForAuth);
         System.out.println(responseUserData.asString());
     }
 

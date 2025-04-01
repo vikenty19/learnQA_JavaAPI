@@ -3,3 +3,4 @@
  password = 1234
  loginUrl = https://playground.learnqa.ru/api/user/login
  authUrl = https://playground.learnqa.ru/api/user/auth
+keys = "email","username","firstName","lastName"
