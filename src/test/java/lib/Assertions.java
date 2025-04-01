@@ -43,6 +43,6 @@ public class Assertions {
 
     public static void assertJsonHasNotValue(Response response,String unExpectedFieldName){
 
-        response.then().assertThat().body("$",hasKey(unExpectedFieldName));
+        response.then().assertThat().body("$",not(hasKey(unExpectedFieldName)));
     }
 }
