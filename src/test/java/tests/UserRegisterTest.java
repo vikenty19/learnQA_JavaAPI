@@ -57,7 +57,7 @@ public class UserRegisterTest extends BaseTestCase {
         Response responseCreateAuth = RestAssured
                 .given()
                 .body(userData)
-                .post("https://playground.learnqa.ru/api/user")
+                .post(urlReg)
                 .andReturn();
         System.out.println(responseCreateAuth.asString());
         Assertions.assertResponseCodeEquals(responseCreateAuth,400);

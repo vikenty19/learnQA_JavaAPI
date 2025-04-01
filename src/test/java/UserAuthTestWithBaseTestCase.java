@@ -60,10 +60,8 @@ public class UserAuthTestWithBaseTestCase extends BaseTestCase {
 
     @Test
     public void authUser() throws IOException {
-        properties= new Properties();
-       File data = new File("./src/test/java/lib/properties");
-        FileInputStream loadData = new FileInputStream(data);
-        properties.load(loadData);
+
+        properties =getProperty();
         Map<String, String> authData = new HashMap<>();
         authData.put("email", properties.getProperty("email"));
         authData.put("password", properties.getProperty("password"));
@@ -80,7 +78,7 @@ public class UserAuthTestWithBaseTestCase extends BaseTestCase {
                 .given()
                 .header("x-csrf-token", token)
                 .cookie("auth_sid", authCookie)
-                .get("https://playground.learnqa.ru/api/user/auth")
+                .get(urlAuth)
                 .jsonPath();
         System.out.println(userId + " userId  --->" + responseForReg.getInt("user_id"));
         assertEquals(userId, responseForReg.getInt("user_id"), "user has not the same id");

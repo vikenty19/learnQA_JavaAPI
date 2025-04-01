@@ -7,7 +7,12 @@ import io.restassured.specification.RequestSpecification;
 import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Map;
+import java.util.Properties;
 
 import static org.hamcrest.Matchers.hasKey;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -54,5 +59,12 @@ public class BaseTestCase {
         assertTrue(userId > 0);
         System.out.println("user id  is   " + userId);
         return userId;
+    }
+    protected Properties getProperty() throws IOException {
+      Properties  properties= new Properties();
+        File data = new File("./src/test/java/lib/properties");
+        FileInputStream loadData = new FileInputStream(data);
+        properties.load(loadData);
+        return properties;
     }
 }
