@@ -1,5 +1,6 @@
 package lib;
 
+import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.http.Headers;
 import io.restassured.response.Response;
@@ -11,6 +12,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
@@ -26,6 +28,7 @@ public class BaseTestCase {
     protected String urlLogin = "https://playground.learnqa.ru/api/user/login";
     protected String urlReg = "https://playground.learnqa.ru/api/user/";
     protected RequestSpecification spec;
+    public Properties properties;
 
     public RequestSpecification setUpSpec() {
         spec = new RequestSpecBuilder()
@@ -40,6 +43,21 @@ public class BaseTestCase {
                     .setBaseUri(urlAuth)
                     .build();
         }*/
+    public Response loginRegisteredUser(){
+        try {
+            properties = getProperty();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        Map<String, String> authData = new HashMap<>();
+        authData.put("email", properties.getProperty("email"));
+        authData.put("password", properties.getProperty("password"));
+        Response responseGetAuth = RestAssured.given()
+                .body(authData)
+                .post(urlLogin)
+                .andReturn();
+        return responseGetAuth;
+    }
     protected String getHeader(Response response, String name) {
         Headers headers = response.getHeaders();
         assertTrue(headers.hasHeaderWithName(name), "Response doesn't have header with name  " + name);

@@ -46,12 +46,32 @@ public class UserGetTest extends BaseTestCase {
             .get(urlReg + userId)
             .andReturn();
     Assertions.assertResponseCodeEquals(responseUserData, 200);
-  /*  Assertions.assertJsonHasValue(responseUserData, "username");
-    Assertions.assertJsonHasValue(responseUserData, "firstName");
-    Assertions.assertJsonHasValue(responseUserData, "lastName");
-    Assertions.assertJsonHasValue(responseUserData, "email");*/
     String[]keys = {"email","username","firstName","lastName"};
     Assertions.assertJsonHasFields(responseUserData,keys);
+
+}
+@Test
+public void getUserDataByAnotherRegisteredUser(){
+
+    Response responseLoginUser = loginRegisteredUser();
+    int UserId = responseLoginUser.jsonPath().getInt("user_id");
+    String headerAuth = this.getHeader(responseLoginUser,"x-csrf-token");
+    String cookieAuth = this.getCookie(responseLoginUser, "auth_sid");
+
+    Response responseForCheckRegisteredUser= RestAssured.given()
+            .cookie("cookie",cookieAuth)
+            .header("header",headerAuth)
+            .get(urlReg+UserId)
+            .andReturn();
+    Assertions.assertResponseCodeEquals(responseForCheckRegisteredUser,200);
+    Response responseForCheckOtherUser= RestAssured.given()
+            .cookie("cookie",cookieAuth)
+            .header("header",headerAuth)
+            .get(urlReg+Math.addExact(UserId,1))
+            .andReturn();
+ 
+    System.out.println(urlReg+Math.addExact(UserId,1));
+    System.out.println(responseForCheckOtherUser.asString());
 
 }
 
