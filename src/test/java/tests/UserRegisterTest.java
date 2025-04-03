@@ -1,10 +1,14 @@
 package tests;
 
+import io.qameta.allure.Description;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import lib.Assertions;
 import lib.BaseTestCase;
 import lib.DateGenerator;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -15,7 +19,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class UserRegisterTest extends BaseTestCase {
-
+@Epic("Registration cases")
+@Feature("Registration of user")
     @Test
     public void createUserWithExistingEmail(){
         String email = "vinkotov@example.com";
@@ -32,6 +37,8 @@ public class UserRegisterTest extends BaseTestCase {
         Assertions.assertResponseCodeEquals(responseCreateAuth,400);
     }
     @Test
+    @Description("This is a happy path")
+    @DisplayName("Registration with valid credentials")
     public void createUserSuccessfully(){
 
         Map<String ,String> userData = new HashMap<>();
@@ -49,6 +56,8 @@ public class UserRegisterTest extends BaseTestCase {
          Assertions.assertJsonHasValue(responseCreateAuth,"id");
     }
     @Test
+    @Description("Invalid email user")
+    @DisplayName("user email without @")
     public void createUserIncorrectEmail(){
         String email = "vinkotovexample.com";
         Map<String ,String> userData = new HashMap<>();//HashMap with notDefaultValues
@@ -66,6 +75,8 @@ public class UserRegisterTest extends BaseTestCase {
     }
     @ParameterizedTest
     @CsvSource({"vinkotov@example.com, ,","  ,1234"})
+    @DisplayName("negative tests")
+    @Description("user tries to login with empty email or password ")
     public void createUserEmptyField(String email,String password){
         Map<String,String>authData = new HashMap<>();
         authData.put("email",email);
@@ -93,6 +104,8 @@ public class UserRegisterTest extends BaseTestCase {
     @ValueSource(strings = {" ","q","qq","250nZa6c2gBZTtreFM2yPtHrh0JqZOGRvoCbKZgvzUWEuBUYYrmVbnPoUKYZ5aoqY8VPUemxMkEHdjHphL7Q4zYjhlQCAhkDlQ2INDc7a4TrGFEqVAAMUu4EZxvkGbsYkHK8nm6uZ6rtiyaGtdzlcNwjIJ5L" +
             "WggQeWCKKQTSAnr9IetA4xZ6DamRrisT5ehMI6u9usOImYxL2z73m0Uhrb74ouVbUPlRnksZbpOYIvOtR3TVaZu1VakC5F","251dnZa6c2gBZTtreFM2yPtHrh0JqZOGRvoCbKZgvzUWEuBUYYrmVbnPoUKYZ5aoqY8VPUemxMkEHdjHphL7Q4zYjhlQCAhkDlQ2INDc7a4TrGFEqVAAMUu4EZxvkGbsYkHK8nm6uZ6rtiyaGtdzlcNwjIJ5LWggQeWCKKQTSAnr9IetA4xZ" +
             "6DamRrisT5ehMI6u9usOImYxL2z73m0Uhrb74ouVbUPlRnksZbpOYIvOtR3TVaZu1VakC5F"})
+    @Description("too long/short or empty username")
+    @DisplayName("negative test for username")
 
     public void loginUserLongOrShortName(String name){
         Map<String,String>authData = new HashMap<>();
@@ -123,6 +136,8 @@ public class UserRegisterTest extends BaseTestCase {
     }
     @ParameterizedTest
     @ValueSource(strings = {"email", "password", "username", "firstName", "lastName"})
+    @DisplayName("negative tests wit empty field")
+    @Description("user tries to register with one needed but empty field ")
     public void negativeUserAuthWithoutOneFieldTest(String field){
         Map<String,String>regData = new HashMap<>();
         regData.put(field,null);
