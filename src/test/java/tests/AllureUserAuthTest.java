@@ -9,6 +9,7 @@ import io.restassured.specification.RequestSpecification;
 import lib.ApiCoreRequest;
 import lib.Assertions;
 import lib.BaseTestCase;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -24,7 +25,7 @@ public class AllureUserAuthTest extends BaseTestCase {
     String header;
     Integer user_id;
     private final ApiCoreRequest apiCoreRequest= new ApiCoreRequest();
-    @org.junit.jupiter.api.BeforeEach
+    @BeforeEach
     public void loginUser() {
 
 
@@ -42,7 +43,7 @@ public class AllureUserAuthTest extends BaseTestCase {
     };
 
     @Test
-    @Description("This test is happy pass")
+    @Description("This test is a happy pass")
     @DisplayName("Test positive auth user")
     public void testAuthUser(){
 
@@ -77,23 +78,10 @@ public class AllureUserAuthTest extends BaseTestCase {
         }else {
            throw new IllegalArgumentException("Condition is unknown  "+ condition);
         }
-
-
-            if (condition.equals("cookie")) {
-            spec.cookie("auth_sid",this.cookie);
-
-        }
-             else if(condition.equals("header")){
-
-             spec.header("x-csrf-token",this.header);
-        } else {
-            throw new IllegalArgumentException("Condition value is  "+ condition);
-        }
-        Response responseForCheck = spec.get().andReturn();
-        Assertions.assertJsonByName(responseForCheck,"user_id",0);
-
-
     }
+
+
+
 }
 
 

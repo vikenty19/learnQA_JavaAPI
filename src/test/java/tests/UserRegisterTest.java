@@ -25,7 +25,7 @@ public class UserRegisterTest extends BaseTestCase {
             Response responseCreateAuth = RestAssured
                 .given()
                 .body(userData)
-                .post("https://playground.learnqa.ru/api/user")
+                .post(urlReg)
                 .andReturn();
                System.out.println(responseCreateAuth.asString());
         Assertions.assertResponseTextEquals(responseCreateAuth,"Users with email '"+ email+"' already exists");
@@ -65,7 +65,7 @@ public class UserRegisterTest extends BaseTestCase {
 
     }
     @ParameterizedTest
-    @CsvSource({"vinkotov@example.com,  ","  ,1234"})
+    @CsvSource({"vinkotov@example.com, ,","  ,1234"})
     public void createUserEmptyField(String email,String password){
         Map<String,String>authData = new HashMap<>();
         authData.put("email",email);
@@ -74,13 +74,13 @@ public class UserRegisterTest extends BaseTestCase {
         Response responseCreateAuth = RestAssured
                 .given()
                 .body(authData)
-                .post("https://playground.learnqa.ru/api/user")
+                .post(urlReg)
                 .andReturn();
-     //   System.out.println(responseCreateAuth.asString());
-       // System.out.println(responseCreateAuth.statusCode());
+
         if (email==null){
             Assertions.assertResponseTextEquals(responseCreateAuth,
                     "The following required params are missed: email");
+
         } else if (password==null){
             Assertions.assertResponseTextEquals(responseCreateAuth,
                     "The following required params are missed: password");
@@ -119,6 +119,25 @@ public class UserRegisterTest extends BaseTestCase {
             Assertions.assertJsonHasValue(responseCreateAuth,"id");
             Assertions.assertResponseCodeEquals(responseCreateAuth,200);
         }
+
+    }
+    @ParameterizedTest
+    @ValueSource(strings = {"email", "password", "username", "firstName", "lastName"})
+    public void negativeUserAuthWithoutOneFieldTest(String field){
+        Map<String,String>regData = new HashMap<>();
+        regData.put(field,null);
+        regData = DateGenerator.getRegistrationData(regData);
+        Response response = RestAssured.given()
+                .body(regData)
+                .post(urlReg)
+                .andReturn();
+
+        if(regData.get(field)==null){
+            Assertions.assertResponseTextEquals(response,"The following required params are missed: "+field);
+                  }
+        Assertions.assertResponseCodeEquals(response,400);
+
+
 
     }
 }

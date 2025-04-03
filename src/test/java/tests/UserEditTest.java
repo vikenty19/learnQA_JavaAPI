@@ -21,7 +21,7 @@ public class UserEditTest extends BaseTestCase {
         JsonPath responseCreateAuth = RestAssured
                 .given()
                 .body(createData)
-                .post("https://playground.learnqa.ru/api/user/")
+                .post(urlReg)
                 .jsonPath();
         String userId = responseCreateAuth.getString("id");
 
@@ -43,7 +43,7 @@ public class UserEditTest extends BaseTestCase {
                 .body(editData)
                 .header("x-csrf-token",this.getHeader(responseLoginData,"x-csrf-token"))
                 .cookie("auth_sid",this.getCookie(responseLoginData,"auth_sid"))
-                .put("https://playground.learnqa.ru/api/user/" + userId)
+                .put(urlReg + userId)
                 .andReturn();
 
         // Get new useData

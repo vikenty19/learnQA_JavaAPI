@@ -4,9 +4,11 @@ import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
+import lib.ApiCoreRequest;
 import lib.BaseTestCase;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.Assert;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -25,19 +27,16 @@ public class UserAuthTest extends BaseTestCase {
     String cookie;
     String header;
     Integer user_id;
-
-    @org.junit.jupiter.api.BeforeEach
+private final ApiCoreRequest apiCoreRequest = new ApiCoreRequest();
+    @BeforeEach
     public void loginUser() {
 
 
         Map<String, String> authData = new HashMap<>();
         authData.put("email","vinkotov@example.com");
         authData.put("password","1234");
-        Response responseGetAuth = RestAssured
-                .given()
-                .body(authData)
-                .post(urlLogin)
-                .andReturn();
+        Response responseGetAuth = apiCoreRequest
+                .makePostRequest(urlLogin,authData);
         this.cookie =  this.getCookie(responseGetAuth,"auth_sid");
         this.header =  this.getHeader(responseGetAuth,"x-csrf-token");
         this.user_id = this.getIntFromResponse(responseGetAuth,"user_id");
