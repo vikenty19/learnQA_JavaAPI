@@ -69,7 +69,7 @@ public void getUserDataByAnotherRegisteredUser(){
             .header("header",headerAuth)
             .get(urlReg+Math.addExact(UserId,1))
             .andReturn();
- 
+
     System.out.println(urlReg+Math.addExact(UserId,1));
     System.out.println(responseForCheckOtherUser.asString());
 
