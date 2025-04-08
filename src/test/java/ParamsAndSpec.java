@@ -97,7 +97,7 @@ public class ParamsAndSpec extends BaseTestCase {
         authData.put("password","1234");
     Response responseGetAuth = given()
             .log()
-            .all()
+            .all()//also can be cookie,header, uri etc.
             .body(authData)
             .post(urlLogin)
             .andReturn();

@@ -43,7 +43,7 @@ public class BaseTestCase {
                     .setBaseUri(urlAuth)
                     .build();
         }*/
-    public Response loginRegisteredUser(){
+    public Response loginRegisteredUser() {
         try {
             properties = getProperty();
         } catch (IOException e) {
@@ -58,6 +58,7 @@ public class BaseTestCase {
                 .andReturn();
         return responseGetAuth;
     }
+
     protected String getHeader(Response response, String name) {
         Headers headers = response.getHeaders();
         assertTrue(headers.hasHeaderWithName(name), "Response doesn't have header with name  " + name);
@@ -78,8 +79,9 @@ public class BaseTestCase {
         System.out.println("user id  is   " + userId);
         return userId;
     }
+
     protected Properties getProperty() throws IOException {
-      Properties  properties= new Properties();
+        Properties properties = new Properties();
         File data = new File("./src/test/java/lib/properties");
         FileInputStream loadData = new FileInputStream(data);
         properties.load(loadData);
