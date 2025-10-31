@@ -6,7 +6,9 @@ import org.junit.Assert;
 import org.junit.Test;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static io.restassured.RestAssured.given;
 
@@ -17,7 +19,7 @@ public class RestTraining {
                 .when()
                 .get("https://restful-booker.herokuapp.com/ping")
                 .then()
-                .assertThat()
+             //   .assertThat()//works without this line
                 .statusCode(201);
     }
 

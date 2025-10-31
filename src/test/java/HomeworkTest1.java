@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import static io.restassured.RestAssured.given;
+
 public class HomeworkTest1 {
     @Test
     public void testJsonPath() {
@@ -22,13 +24,22 @@ public class HomeworkTest1 {
         System.out.println(response.getString("messages[1].message"));
     }
     @Test
+    public void testStatusCode(){
+        given()
+                .baseUri("https://playground.learnqa.ru/api/")
+                .when()
+                .get("get_json_homework")
+                .then()
+                .statusCode(200);
+    }
+    @Test
     public void testJsonPath1() {
 
 
         JsonPath response = RestAssured
                 .get("https://playground.learnqa.ru/api/show_all_headers")
                 .jsonPath();
-      //  response.prettyPrint();
+        response.prettyPrint();
         System.out.println(response.getString("result.GEOIP-CITY"));
 
     }
@@ -43,6 +54,13 @@ public class HomeworkTest1 {
 
         String responseHeaders = response.getHeader("Keep-Alive");
         System.out.println(responseHeaders);
+   /*     Response res = given()
+                .get("https://playground.learnqa.ru/api/show_all_headers")
+                .then()
+                .extract().response();
+        res.prettyPrint();
+        System.out.println(res.asString());*/ //others way to get response
+
     }
 
 
@@ -52,8 +70,7 @@ public class HomeworkTest1 {
         headers.put("myHeader1", "myValue1");
         headers.put("myHeader2", "myValue2");
 
-        Response response = RestAssured
-                .given()
+        Response response = given()
                 .redirects()
                 .follow(false)
             //    .when()
@@ -78,8 +95,7 @@ public class HomeworkTest1 {
         int statusCode;
         int count = 0;
         do {
-            Response response = RestAssured
-                    .given()
+            Response response = given()
                     .redirects()
                     .follow(false)
                   //  .when()
@@ -112,8 +128,7 @@ public class HomeworkTest1 {
 
        while (statusCode !=200){
 
-            Response response = RestAssured
-                    .given()
+            Response response = given()
                     .redirects()
                     .follow(false)
                     //  .when()
@@ -138,8 +153,7 @@ public class HomeworkTest1 {
         headers.put("myHeader1", "myValue1");
         headers.put("myHeader2", "myValue2");
 
-        Response response = RestAssured
-                .given()
+        Response response = given()
                 .redirects()
                 .follow(false)
                 //    .when()
@@ -159,8 +173,7 @@ public class HomeworkTest1 {
         data.put("login", "secret_login");
         data.put("password", "secret_pass");
 
-         Response responseAuthCookie = RestAssured
-                .given()
+         Response responseAuthCookie = given()
                 .body(data)
                 //    .when()
                 .get("https://playground.learnqa.ru/api/get_auth_cookie")
@@ -177,8 +190,7 @@ public class HomeworkTest1 {
         if(responseCookie != null){
         cookies.put("auth_cookie",responseCookie);}
 
-         Response responseToCheckAuth = RestAssured
-                 .given()
+         Response responseToCheckAuth = given()
                  .body(data)
                  .cookies(cookies)
                  .post("https://playground.learnqa.ru/api/check_auth_cookie")
