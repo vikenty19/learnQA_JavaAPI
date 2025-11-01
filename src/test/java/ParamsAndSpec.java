@@ -67,6 +67,7 @@ public class ParamsAndSpec extends BaseTestCase {
         Map<String,String> cookies = responseGetAuth.getCookies();
         Headers headers = responseGetAuth.getHeaders();
         int user_id = responseGetAuth.jsonPath().getInt("user_id");
+        responseGetAuth.then().log().headers();// fetch logs -here headers, but can all(),cookies,body,status()
          //Assertions
         assertEquals(200,responseGetAuth.statusCode(),"unexpected status code");
         assertTrue(cookies.containsKey("auth_sid"),"Response doesn't return auth cookie");

@@ -36,6 +36,7 @@ public class DazzleRestAssured {
                 .body(userData)
                 .post("https://playground.learnqa.ru/api/user/login")
                 .andReturn();
+        response.then().log().body();//cookie,status,header,
         String id_user = response.jsonPath().getString("user_id");
         System.out.println("user ID  = " + id_user);
 
@@ -78,8 +79,45 @@ public class DazzleRestAssured {
                 .body(body1.toString())// Highly important to use toString!!
                 .put("https://dummy.restapiexample.com/api/v1/update/24")
                 .jsonPath();
-        Assert.assertEquals(response.getString("data.age"),body1.getString("age"));
+        Assert.assertEquals(response.getString("data.age"), body1.getString("age"));
         response.prettyPrint();
+
+    }
+
+    @Test
+    public void logIfFailed() {
+        given()
+                .baseUri("https://restcountries.eu/rest/v2")
+                .when()
+                .get("/alpha/GB")
+                .then()
+                .log().ifError();
+
+    }
+
+    @Test
+    public void logIfValidationFailed() {
+        given()
+                .baseUri("https://restcountries.eu/rest/v2")
+                .when()
+                .get("/alpha/GB")
+                .then()
+                .log().ifValidationFails()
+                .statusCode(200);//validation MUST be after .log.validationFails()
+    }
+    @Test
+    public void handlingFormData(){
+        given()
+                .baseUri("https://postman-echo.com")
+                // content type may be differed, but need to be put
+                .contentType("application/x-www-form-urlencoded;charset=UTF-8")
+                .formParam("firstname","John")
+                .formParam("lastname","Dou")
+                .when()
+                .post("/post")
+                .then()
+                .log().body()
+                .statusCode(200);
 
 
     }

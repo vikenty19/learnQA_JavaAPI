@@ -16,7 +16,7 @@ public class Homework2Junit {
         String name = "Vasya";
         JsonPath response = RestAssured
                 .given()
-                .queryParams("name",name)
+                .queryParam("name",name)
                 .get("https://playground.learnqa.ru/api/hello")
                 .jsonPath();
         response.prettyPrint();
@@ -32,8 +32,10 @@ public void helloWorldWithParams(String name){
         }
         JsonPath response = RestAssured
                 .given()
+                .baseUri("https://playground.learnqa.ru")
                 .queryParams(queryParams)
-                .get("https://playground.learnqa.ru/api/hello")
+                .when()
+                .get("/api/hello")
                 .jsonPath();
         String answer = response.getString("answer");
         String expectedAnswer = (name.length()>0)? name:"someone";
