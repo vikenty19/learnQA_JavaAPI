@@ -12,14 +12,15 @@ import org.junit.jupiter.api.Test;
 import java.util.HashMap;
 import java.util.Map;
 
+import static io.restassured.RestAssured.given;
+
 public class UserEditTest extends BaseTestCase {
     protected final ApiCoreRequest apiCoreRequest = new ApiCoreRequest();
     @Test
     public void testEditJustCreatedUser(){
         //Generate user
         Map<String,String> createData = DateGenerator.getRegistrationData();
-        JsonPath responseCreateAuth = RestAssured
-                .given()
+        JsonPath responseCreateAuth = given()
                 .body(createData)
                 .post(urlReg)
                 .jsonPath();
@@ -29,8 +30,7 @@ public class UserEditTest extends BaseTestCase {
         Map<String,String>loginData = new HashMap<>();
         loginData.put("email",createData.get("email"));
         loginData.put("password",createData.get("password"));
-        Response responseLoginData = RestAssured
-                .given()
+        Response responseLoginData = given()
                 .body(loginData)
                 .post(urlLogin)
                 .andReturn();
@@ -38,17 +38,25 @@ public class UserEditTest extends BaseTestCase {
         String newName = "New name";
         Map<String,String>editData = new HashMap<>();
         editData.put("firstName",newName);
-        Response responseEditUser= RestAssured
+   /*     Response responseEditUser= RestAssured
                 .given()
                 .body(editData)
                 .header("x-csrf-token",this.getHeader(responseLoginData,"x-csrf-token"))
                 .cookie("auth_sid",this.getCookie(responseLoginData,"auth_sid"))
                 .put(urlReg + userId)
-                .andReturn();
+                .andReturn();*/
+        //way to put query without object creation
+                 given()
+                .body(editData)
+                .header("x-csrf-token",this.getHeader(responseLoginData,"x-csrf-token"))
+                .cookie("auth_sid",this.getCookie(responseLoginData,"auth_sid"))
+                .put(urlReg + userId);
+
+
+
 
         // Get new useData
-        Response responseUserNewData = RestAssured
-                .given()
+        Response responseUserNewData = given()
                 .header("x-csrf-token",this.getHeader(responseLoginData,"x-csrf-token"))
                 .cookie("auth_sid",this.getCookie(responseLoginData,"auth_sid"))
                 .get("https://playground.learnqa.ru/api/user/" + userId)
@@ -61,8 +69,7 @@ public class UserEditTest extends BaseTestCase {
  public void testEditUserByOtherUser(){
         //register user
     Map<String,String> authData = DateGenerator.getRegistrationData();
-    JsonPath responseCreateAuth = RestAssured
-            .given()
+    JsonPath responseCreateAuth = given()
             .body(authData)
             .post("https://playground.learnqa.ru/api/user/")
             .jsonPath();
@@ -74,8 +81,7 @@ public class UserEditTest extends BaseTestCase {
      Map<String,String>editData = new HashMap<>();
      editData.put("username",newUserName);
     System.out.println(editData);
-    Response responseEditUser= RestAssured
-            .given()
+    Response responseEditUser= given()
             .body(editData)
             .put("https://playground.learnqa.ru/api/user/" + userId)
             .andReturn();
@@ -83,8 +89,7 @@ public class UserEditTest extends BaseTestCase {
       //       .makePostRequestUnauthorized("https://playground.learnqa.ru/api/user/" + userId,editData);
 
      // get new user data
-    Response responseUserNewData = RestAssured
-            .given()
+    Response responseUserNewData = given()
             .get("https://playground.learnqa.ru/api/user/" + userId)
             .andReturn();
     System.out.println(responseUserNewData.asString());

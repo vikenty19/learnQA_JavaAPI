@@ -1,0 +1,36 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "User",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "integer",
+      "description": "Unique identifier for the user."
+    },
+    "name": {
+      "type": "string",
+      "description": "Name of the user."
+    },
+    "email": {
+      "type": "string",
+      "format": "email",
+      "description": "Email address of the user."
+    },
+    "is_admin": {
+      "type": "boolean",
+      "description": "Indicates whether the user has admin privileges."
+    },
+    "preferences": {
+      "type": "object",
+      "description": "User preference settings.",
+      "properties": {
+        "lastfm_session_key": {
+          "type": ["string", "null"],
+          "description": "Last.fm session key, if available."
+        }
+      },
+      "required": ["lastfm_session_key"]
+    }
+  },
+  "required": ["id", "name", "email", "is_admin", "preferences"]
+}

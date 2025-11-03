@@ -55,9 +55,9 @@ public class UserAuthTest1 {
     @ParameterizedTest
     @ValueSource(strings = {"cookie", "header"})
     public void negativeAuthTests(String condition) throws IOException {
-        Response response= loginSuccess();
-        Map<String, String> cookies = response.getCookies();
-        Headers headers = response.getHeaders();
+       loginSuccess();
+     //   Map<String, String> cookies = response.getCookies();
+    //    Headers headers = response.getHeaders();
         // spec for the first variant
       /*  RequestSpecification requestSpecification = new RequestSpecBuilder()
                 .setBaseUri("https://playground.learnqa.ru/api/user/auth")
