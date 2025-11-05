@@ -93,6 +93,7 @@ private static String token;
             .statusCode(200)
             .body(matchesJsonSchema(file));
 }
+
 public String getToken(){
     Map<String,String> body = new HashMap<>();
     body.put("email","vikenty.plakhov@testpro.io");
