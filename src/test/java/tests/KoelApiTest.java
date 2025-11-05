@@ -13,7 +13,7 @@ import static io.restassured.RestAssured.given;
 import static io.restassured.module.jsv.JsonSchemaValidator.*;
 
 public class KoelApiTest {
-String token;
+private static String token;
 @Test
     public void  userAuthWithToken(){
         //getting token
@@ -61,7 +61,9 @@ String token;
 
     }
 @Test
-    public void likeSong(){//doesn't work! Why??
+    public void likeSong(){
+  //  token=getToken();//commented to check if we have token when running whole class--> yes!
+    System.out.println(token);
    Response userData = RestAssured
             .given()
             .baseUri("https://qa.koel.app")
@@ -77,7 +79,7 @@ String token;
 @Test
     public void  koelJsonSchemaValidation(){
     File file = new File("./resources/koelUserJsonSchema.json");
-    token = getToken();
+  //  token = getToken();
     given()
             .baseUri("https://qa.koel.app")
             .headers(

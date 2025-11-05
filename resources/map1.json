@@ -1,0 +1,11 @@
+{
+  "request": {
+    "method":"GET",
+    "url": "/whatsUp"
+  },
+  "response": {
+    "status": 200,
+    "body": "Hello from Mock Server!"
+
+  }
+}
