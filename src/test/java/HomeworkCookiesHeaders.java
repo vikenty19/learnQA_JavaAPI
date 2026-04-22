@@ -5,14 +5,13 @@ import io.restassured.response.Response;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 import static io.restassured.RestAssured.given;
+import static io.restassured.internal.assertion.CookieMatcher.getCookies;
 
-public class HomeworkTest1 {
+public class HomeworkCookiesHeaders {
     @Test
     public void testJsonPath() {
 
@@ -198,5 +197,6 @@ public class HomeworkTest1 {
          responseToCheckAuth.print();
         Assert.assertTrue(responseCookie != null);
     }
-
 }
+
+

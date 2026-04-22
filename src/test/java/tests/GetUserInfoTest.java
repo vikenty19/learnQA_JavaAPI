@@ -81,4 +81,5 @@ public class GetUserInfoTest extends BaseTestCase {
         Assertions.assertJsonHasValue(responseUserData,"username");
         System.out.println(responseUserData.asString());
     }
+
 }

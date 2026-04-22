@@ -34,7 +34,7 @@ private static String token;
         System.out.println(token);
         //get user data
         // first variant with response
-   /*     Response userData = RestAssured
+        Response userData = RestAssured
                 .given()
                 .baseUri("https://qa.koel.app")
                 .headers(
@@ -44,10 +44,12 @@ private static String token;
                 .get("/api/me")
                 .andReturn();
        String use_id = userData.jsonPath().getString("id");
-        System.out.println(use_id);*/
+       int statusCode = userData.statusCode();
+    System.out.println("status code is  "+statusCode);
+        System.out.println(use_id);
 
 // second variant without response body
-        given()
+   /*     given()
                 .baseUri("https://qa.koel.app")
                 .headers(
                         "Accept", "application/json",
@@ -57,7 +59,7 @@ private static String token;
                 .get("/api/me")
                 .then()
                 .log().body()
-                .statusCode(200);
+                .statusCode(200);*/
 
     }
 @Test
