@@ -3,4 +3,8 @@
  password = 1234
  loginUrl = https://playground.learnqa.ru/api/user/login
  authUrl = https://playground.learnqa.ru/api/user/auth
-keys = "email","username","firstName","lastName"
+ keys = email,username,firstName,lastName
+ KoelPassword=MEGAdelta06@
+ KoelEmail=vikenty.plakhov@testpro.io
+ KoelURL=https://qa.koel.app
+ name = Donald John Trump

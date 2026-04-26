@@ -22,7 +22,7 @@ import io.qameta.allure.Feature;
 import org.junit.jupiter.api.DisplayName;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
+@Epic()
 public class UserAuthTest extends BaseTestCase {
     String cookie;
     String header;
@@ -44,25 +44,7 @@ private final ApiCoreRequest apiCoreRequest = new ApiCoreRequest();
 
 
     };
-    @Test
-    public void loginUser1() {
 
-
-        Map<String, String> authData = new HashMap<>();
-        authData.put("email","vinkotov@example.com");
-        authData.put("password","1234");
-        Response responseGetAuth = RestAssured
-                .given()
-                .body(authData)
-                /*.auth()
-                .preemptive()
-                .basic()*/
-                 .post("https://playground.learnqa.ru/api/user/login")
-                .andReturn();
-      responseGetAuth.print();
-        assertEquals(responseGetAuth.statusCode(), 200);
-
-    };
 
     public void loginUser(String email) {
 
@@ -86,9 +68,6 @@ private final ApiCoreRequest apiCoreRequest = new ApiCoreRequest();
 
     @Test
      public void testAuthUser(){
-
-
-
         Response responseCheckAuth = RestAssured
                 .given()
                 // .header("x-csrf-token",responseGetAuth.getHeader("x-csrf-token"))
@@ -97,8 +76,7 @@ private final ApiCoreRequest apiCoreRequest = new ApiCoreRequest();
                 .cookie("auth_sid",this.cookie)
                 .get("https://playground.learnqa.ru/api/user/auth")
                 .andReturn();
-
-       Assertions.assertJsonByName(responseCheckAuth,"user_id",this.user_id);
+            Assertions.assertJsonByName(responseCheckAuth,"user_id",this.user_id);
     }
 
 

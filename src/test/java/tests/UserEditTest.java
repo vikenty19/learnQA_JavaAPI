@@ -15,7 +15,7 @@ import java.util.Map;
 import static io.restassured.RestAssured.given;
 
 public class UserEditTest extends BaseTestCase {
-    protected final ApiCoreRequest apiCoreRequest = new ApiCoreRequest();
+
     @Test
     public void testEditJustCreatedUser(){
         //Generate user
@@ -59,7 +59,7 @@ public class UserEditTest extends BaseTestCase {
         Response responseUserNewData = given()
                 .header("x-csrf-token",this.getHeader(responseLoginData,"x-csrf-token"))
                 .cookie("auth_sid",this.getCookie(responseLoginData,"auth_sid"))
-                .get("https://playground.learnqa.ru/api/user/" + userId)
+                .get(urlReg + userId)
                 .andReturn();
         System.out.println(responseUserNewData.asString());
         Assertions.assertJsonByName(responseUserNewData,"firstName",newName);

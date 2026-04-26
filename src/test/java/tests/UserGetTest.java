@@ -15,7 +15,7 @@ import static org.hamcrest.Matchers.hasKey;
 
 public class UserGetTest extends BaseTestCase {
     @Test
-    public void testGetUser(){//check user data without authorization
+    public void testGetUserNoAuth(){//check user data without authorization
         Response response = RestAssured.given()
                 .get(urlReg+"2")//userId =2
         .andReturn();
@@ -46,7 +46,8 @@ public class UserGetTest extends BaseTestCase {
             .get(urlReg + userId)
             .andReturn();
     Assertions.assertResponseCodeEquals(responseUserData, 200);
-    String[]keys = {"email","username","firstName","lastName"};
+
+    String[] keys = properties.getProperty("keys").split(",");
     Assertions.assertJsonHasFields(responseUserData,keys);
 
 }
