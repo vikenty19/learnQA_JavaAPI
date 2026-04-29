@@ -4,6 +4,7 @@ import lib.AssertionsKoel;
 import lib.AuthService;
 import lib.BaseTestCase;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import io.restassured.RestAssured;
@@ -27,25 +28,7 @@ public class KoelApiTest extends BaseTestCase {
     RequestSpecification spec;
  @BeforeEach
     public void createSpecWithToken() throws IOException {
-   /*     properties = new Properties();
-        File data = new File("./src/test/java/lib/properties");
-        FileInputStream loadData = new FileInputStream(data);
-        properties.load(loadData);
-        Map<String, String> authData = new HashMap<>();
-        authData.put("email", properties.getProperty("KoelEmail"));
-        authData.put("password", properties.getProperty("KoelPassword"));
-        Response response = RestAssured
-                .given()
-                .baseUri(properties.getProperty("KoelURL"))
-                .headers("Content-Type", "application/json",
-                        "Accept", "application/json")
-                .body(authData)
-                .when()
-                .post("/api/me")
-                .thenReturn();
-        this.token = response.jsonPath().getString("token");//we can't return token in @Before each make it in class scope
 
-        assertTrue((this.token!=null && !this.token.isEmpty()),"Token was NOT generated");*/
         spec = RestAssured.given();
         spec.baseUri("https://qa.koel.app");
         spec.headers("Content-Type", "application/json",
@@ -55,6 +38,7 @@ public class KoelApiTest extends BaseTestCase {
 
 
     @Test
+    @Tag("smoke")
     public void userAuthWithToken() throws IOException {
 //just to check if @BeforeEach works correctly
   //      getTokenAndLogin();
@@ -99,6 +83,7 @@ public class KoelApiTest extends BaseTestCase {
                response.prettyPrint();
     }
  @Test
+ @Tag("smoke")
  public void updateCurrentUser(){
 
      Map<String, String> authData = new HashMap<>();
@@ -126,8 +111,8 @@ public class KoelApiTest extends BaseTestCase {
  @Test//doesn't allow
  public void updateUserData(){
      Map<String, String> authData = new HashMap<>();
-     authData.put("email", properties.getProperty("KoelEmail"));
-     authData.put("current_password", properties.getProperty("KoelPassword"));
+     authData.put("email", AuthService.properties.getProperty("KoelEmail"));
+     authData.put("current_password", AuthService.properties.getProperty("KoelPassword"));
      authData.put("name","John Doe");
      Response response = RestAssured
              .given()
@@ -139,6 +124,7 @@ public class KoelApiTest extends BaseTestCase {
      System.out.println(response.asString());
  }
  @Test
+ @Tag("smoke")
 public void getPlayedSongs(){
      Response userData = RestAssured
              .given()
@@ -163,7 +149,8 @@ public void getPlayedSongs(){
      assertEquals(response.getStatusCode(),404,"Unexpected status code");
 }
     @Test
-    public void likeSongFromResentlyPlayed() {
+    @Tag("smoke")
+    public void likeSongFromRecentlyPlayed() {
         Response userData = RestAssured
                 .given()
                 .spec(spec).get("/api/interaction/recently-played/2")
@@ -187,7 +174,7 @@ public void getPlayedSongs(){
         File file = new File("./resources/koelUserJsonSchema.json");
         //without creating response
                 given()
-                .baseUri(properties.getProperty("KoelURL"))
+                .baseUri(AuthService.properties.getProperty("KoelURL"))
                 .headers(
                         "Accept", "application/json",
                         "Content-Type", "application/json")
@@ -203,7 +190,8 @@ public void getPlayedSongs(){
     }
 
     @Test
-    public void koelScemaValidation() {
+    @Tag("smoke")
+    public void koelSchemaValidation() {
         File file = new File("./resources/koelUserJsonSchema.json");
 
                 given()

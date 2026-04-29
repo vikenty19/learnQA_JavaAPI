@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite name="All Test Suite">
+    <test verbose="2" preserve-order="true" name="C:/Users/Acer/Documents/GitHub1/learnQA_JavaAPI/src/test/java/tests">
+        <classes>
+            <class name="tests.KoelApiTest">
+                <methods>
+                    <include name="userAuthWithToken"/>
+                    <include name="createNewUserByRegisteredUser"/>
+                    <include name="updateCurrentUser"/>
+                    <include name="updateUserData"/>
+                    <include name="getPlayedSongs"/>
+                    <include name="likeSongFromResentlyPlayed"/>
+                    <include name="koelJsonSchemaValidation"/>
+                    <include name="koelScemaValidation"/>
+                </methods>
+            </class>
+            <class name="tests.Schema_validator">
+                <methods>
+                    <include name="jsonLearnQAValidator"/>
+                </methods>
+            </class>
+            <class name="tests.UserEditTest">
+                <methods>
+                    <include name="testEditJustCreatedUser"/>
+                    <include name="testEditUserByOtherUser"/>
+                </methods>
+            </class>
+            <class name="tests.UserGetTest">
+                <methods>
+                    <include name="testGetUserNoAuth"/>
+                    <include name="getUserDataAuthSameUser"/>
+                    <include name="getUserDataByAnotherRegisteredUser"/>
+                </methods>
+            </class>
+            <class name="tests.UserRegisterTest">
+                <methods>
+                    <include name="createUserWithExistingEmail"/>
+                    <include name="createUserSuccessfully"/>
+                    <include name="createUserIncorrectEmail"/>
+                </methods>
+            </class>
+            <class name="tests.UsrDeleteTest">
+                <methods>
+                    <include name="deleteExistingUser"/>
+                    <include name="deleteJustCreatedUser"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+</suite>

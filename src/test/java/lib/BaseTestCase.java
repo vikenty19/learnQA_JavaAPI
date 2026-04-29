@@ -5,7 +5,7 @@ import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.http.Headers;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
-import org.junit.Before;
+
 import org.junit.jupiter.api.BeforeEach;
 
 import java.io.File;

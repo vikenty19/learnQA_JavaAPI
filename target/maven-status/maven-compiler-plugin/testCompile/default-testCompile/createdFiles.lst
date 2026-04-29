@@ -1,0 +1,13 @@
+lib\BaseTestCase.class
+tests\Schema_validator.class
+lib\AssertionsKoel.class
+lib\AuthService.class
+tests\UserRegisterTest.class
+tests\UsrDeleteTest.class
+lib\Assertions.class
+tests\UserGetTest.class
+lib\ApiCoreRequest.class
+tests\UserEditTest.class
+suites\AllTestsSuite.class
+tests\KoelApiTest.class
+lib\DateGenerator.class
