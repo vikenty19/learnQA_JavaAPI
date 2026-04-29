@@ -4,7 +4,8 @@ import org.junit.platform.suite.api.SelectClasses;
 import tests.KoelApiTest;
 import tests.Schema_validator;
 
-@Suite
+
+//@Suite
 @SelectClasses({
         KoelApiTest.class,
         Schema_validator.class

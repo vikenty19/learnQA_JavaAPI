@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: tests.UserRegisterTest
 -------------------------------------------------------------------------------
-Tests run: 15, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 14.80 s -- in tests.UserRegisterTest
+Tests run: 15, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 16.28 s -- in tests.UserRegisterTest
