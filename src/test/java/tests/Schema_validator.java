@@ -25,7 +25,7 @@ public class Schema_validator  {
                 .get("/api/me")
                 .then()
                 .assertThat()
-                .body(matchesJsonSchema(file));
+                .body(matchesJsonSchema(file));//Json Schema
     }
     public RequestSpecification createSpecWithToken() throws IOException {
          spec = RestAssured.given();
