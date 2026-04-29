@@ -22,7 +22,8 @@ import io.qameta.allure.Feature;
 import org.junit.jupiter.api.DisplayName;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-@Epic()
+@Epic("Authorization cases")
+@Feature("Authorization")
 public class UserAuthTest extends BaseTestCase {
     String cookie;
     String header;
@@ -67,6 +68,8 @@ private final ApiCoreRequest apiCoreRequest = new ApiCoreRequest();
 
 
     @Test
+    @Description("Test login user with email and password")
+    @DisplayName("Test positive auth user")
      public void testAuthUser(){
         Response responseCheckAuth = RestAssured
                 .given()
@@ -79,6 +82,7 @@ private final ApiCoreRequest apiCoreRequest = new ApiCoreRequest();
             Assertions.assertJsonByName(responseCheckAuth,"user_id",this.user_id);
     }
 
+@Description("This test checks authorization status w/o header-token or cookie")
 
     @ParameterizedTest
     @ValueSource(strings = {"cookie","header"})

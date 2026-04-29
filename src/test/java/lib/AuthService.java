@@ -5,6 +5,7 @@ import io.restassured.response.Response;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -35,5 +36,12 @@ public class AuthService {
             token = response.jsonPath().getString("token");
           assertTrue((token!=null && !token.isEmpty()),"Token was NOT generated");
         return token;
+    }
+    public static Properties readProperties() throws IOException {
+        properties = new Properties();
+        File data = new File("./src/test/java/lib/properties");
+        FileInputStream loadData = new FileInputStream(data);
+        properties.load(loadData);
+        return properties;
     }
 }

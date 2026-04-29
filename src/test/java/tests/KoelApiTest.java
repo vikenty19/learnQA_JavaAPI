@@ -26,7 +26,7 @@ public class KoelApiTest extends BaseTestCase {
     Properties properties;
     RequestSpecification spec;
  @BeforeEach
-    public void getTokenAndLogin() throws IOException {
+    public void createSpecWithToken() throws IOException {
    /*     properties = new Properties();
         File data = new File("./src/test/java/lib/properties");
         FileInputStream loadData = new FileInputStream(data);
