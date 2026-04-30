@@ -7,13 +7,13 @@ pipeline{
                   mvn clean compile
                 '''
             }
+        }
         stage('Test'){
-            steps{
-                sh'''
-                mvn test -DincludeTags=smoke
-                '''
-            }
+        steps{
+            sh'''
+            mvn test -DincludeTags=smoke
+            '''
         }
-        }
+    }
     }
 }
