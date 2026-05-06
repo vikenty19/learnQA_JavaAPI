@@ -2,14 +2,16 @@ pipeline {
     agent any
 
     stages {
+
         stage('Build') {
             steps {
                 sh '''
                 docker run --rm \
+                  -u $(id -u):$(id -g) \
                   -v $(pwd):/app \
                   -w /app \
                   maven:3.8.4-openjdk-17 \
-                  mvn clean compile
+                  mvn clean package -DskipTests
                 '''
             }
         }
@@ -18,6 +20,7 @@ pipeline {
             steps {
                 sh '''
                 docker run --rm \
+                  -u $(id -u):$(id -g) \
                   -v $(pwd):/app \
                   -w /app \
                   maven:3.8.4-openjdk-17 \
