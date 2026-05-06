@@ -28,10 +28,10 @@ pipeline {
                 '''
             }
         }
-        post {
+    }
+       post {
                 always {
-                    junit 'target/tests-reports/*.xml'
+                    junit 'target/surefire-reports/*.xml'
                 }
             }
-    }
 }
